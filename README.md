@@ -31,3 +31,34 @@ Explanation given in comment format. Follow repos in order.
 3. [Sunflower](/Sunflower): Change app icon.
     > https://codelabs.developers.google.com/codelabs/kotlin-android-training-available-resources
 
+4. [AboutMe](/AboutMe)
+    1. Linear layout, ViewGroup, styles
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-linear-layout
+
+        1. **ViewGroup**: A view that can hold other views, eg. `LinearLayout`, `ScrollView`.
+        2. **Styles**: Font, text size, padding and other elements in layout files can be grouped as styles.
+    
+            ```xml
+               <TextView
+                   android:id="@+id/name_text"
+                   android:fontFamily="@font/roboto"
+                   android:textSize="@dimen/text_size"
+                   android:textColor="@android:color/black"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="@string/name"
+                   android:textAlignment="center" /> 
+            ```
+            
+            To create style right click `<TextView`, then **refactor>style**.
+            
+            ```xml
+               <TextView
+                   android:id="@+id/name_text"
+                   style="@style/NameStyle"
+                   android:layout_width="match_parent"
+                   android:layout_height="wrap_content"
+                   android:text="@string/name"
+                   android:textAlignment="center" /> 
+            ```
+ 
