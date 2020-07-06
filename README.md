@@ -17,5 +17,10 @@ Explanation given in comment format. Follow repos in order.
             - **compileSdkVersion**: Version used to compile app. It allows app to use new features.
             - **targetSdkVersion**: Most recent API you have tested your app against.
             - **minSdkVersion**: Minimum level to support.
+
         4. Backward compatibility
-            **androidx** provides helper classes to ensure backward compatibility. It's an improvement over Android support library/
+            **androidx** provides helper classes to ensure backward compatibility. It's an improvement over Android support library.
+            
+            Eg. to display vector images in older android versions instead of converting them to bitmap, use `vectorDrawables.useSupportLibrary`. In `<ImageView>` replace `android:src` with `app:srcCompat`.
+        
+        5. `app` namespace: Used in XML files for custom functionality not provided by core android framework. Eg. for vector drawables `app:srcCompat` was used.
