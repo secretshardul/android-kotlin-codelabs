@@ -24,3 +24,10 @@ Explanation given in comment format. Follow repos in order.
             Eg. to display vector images in older android versions instead of converting them to bitmap, use `vectorDrawables.useSupportLibrary`. In `<ImageView>` replace `android:src` with `app:srcCompat`.
         
         5. `app` namespace: Used in XML files for custom functionality not provided by core android framework. Eg. for vector drawables `app:srcCompat` was used.
+
+2. [MyBasicActivity](/MyBasicActivity): Using and importing activity templates.
+    > https://codelabs.developers.google.com/codelabs/kotlin-android-training-available-resources
+
+3. [Sunflower](/Sunflower): Change app icon.
+    > https://codelabs.developers.google.com/codelabs/kotlin-android-training-available-resources
+
