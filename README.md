@@ -61,4 +61,10 @@ Explanation given in comment format. Follow repos in order.
                    android:text="@string/name"
                    android:textAlignment="center" /> 
             ```
- 
+
+    2. `visibility` attribute for hiding views
+        - **visible**
+        - **invisible**: Hides view, but it still takes up space.
+        - **gone**: Hides view, and view does not take up any space.
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-interactivity
+
