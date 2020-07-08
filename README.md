@@ -78,6 +78,16 @@ Explanation given in comment format. Follow repos in order.
       - **gone**: Hides view, and view does not take up any space.
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-interactivity
 
+   3. **Data binding**: It is a more efficient alternative to `findViewById()`. It eliminates the need to traverse the view hierarchy multiple times. In data binding a common `Binding` holds reference to each view. This single object is used to access views.
+      > https://codelabs.developers.google.com/codelabs/kotlin-android-training-data-binding-basics
+
+      ![](images/2020-07-08-13-30-16.png)
+
+    Data binding uses:
+        1. Eliminate `findViewById()`
+        2. 
+
+
 5. [ColorMyViews](/ColorMyViews): `ContraintLayout`
 
     > https://codelabs.developers.google.com/codelabs/kotlin-android-training-constraint-layout
