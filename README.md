@@ -87,7 +87,6 @@ Explanation given in comment format. Follow repos in order.
         1. Eliminate `findViewById()`
         2. Data binding to display data: Data is used to directly make a **data class** available to a view. Here `MyName` data class is used to provide name and nickname to `activity_main.xml`. Special `<data>`, `<variable>` and `@{}` syntax is used to pass a data class to the layout.
     
->>>>>>> a611fdf... [contd] Data binding, Data class to display data
 5. [ColorMyViews](/ColorMyViews): `ContraintLayout`
 
     > https://codelabs.developers.google.com/codelabs/kotlin-android-training-constraint-layout
@@ -124,3 +123,18 @@ Explanation given in comment format. Follow repos in order.
    3. **Design time attributes**: They're only displayed during layout design and are ignored at runtime. They're helpful for designing. They begin with `tools` namespace.
    
    4. **Baseline constraints**: Aligns baseline of one view's text with baseline of another view's text. This means text is always aligned, even when font sizes are different. This is done using `app:layout_constraintBaseline_toBaselineOf` attribute. To do this from design menu, right click the view and click on **show baseline**.
+   
+6. (AndroidTrivia-Starter)[/AndroidTrivia-Starter]: Fragments
+    1. **Fragment**: A fragment is a sub-activity which can be reused in other activities. It has its own lifecycle events, layout file and kotlin class. Fragments can be added or removed when an activity is removed. Fragments are comparable to react components.
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-create-and-add-fragmen
+    
+        To inflate fragment, add binding to fragment's `onCreateView()`:
+        
+        ```kotlin
+        override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
+                                  savedInstanceState: Bundle?): View? {
+            // Inflate the layout for this fragment
+            val binding = DataBindingUtil.inflate<FragmentTitleBinding>(inflater, R.layout.fragment_title, container, false)
+            return binding.root
+        }
+        ```
