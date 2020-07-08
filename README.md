@@ -85,9 +85,9 @@ Explanation given in comment format. Follow repos in order.
 
     Data binding uses:
         1. Eliminate `findViewById()`
-        2. 
-
-
+        2. Data binding to display data: Data is used to directly make a **data class** available to a view. Here `MyName` data class is used to provide name and nickname to `activity_main.xml`. Special `<data>`, `<variable>` and `@{}` syntax is used to pass a data class to the layout.
+    
+>>>>>>> a611fdf... [contd] Data binding, Data class to display data
 5. [ColorMyViews](/ColorMyViews): `ContraintLayout`
 
     > https://codelabs.developers.google.com/codelabs/kotlin-android-training-constraint-layout

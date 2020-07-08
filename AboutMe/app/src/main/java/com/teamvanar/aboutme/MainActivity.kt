@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import android.widget.EditText
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import com.teamvanar.aboutme.databinding.ActivityMainBinding
 
@@ -18,6 +15,7 @@ class MainActivity : AppCompatActivity() {
      * by 'Binding' is used to name the class.
      */
     private lateinit var binding: ActivityMainBinding
+    private val myName: MyName = MyName("Jack")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,21 +23,29 @@ class MainActivity : AppCompatActivity() {
 
         // Compiler generates names of views in the layout, converting them to Camel case.
         // View with 'done_button' as ID is 'doneButton' in the binding object.
-        binding.doneButton.setOnClickListener {
-            addNickname()
-        }
-
-        binding.nicknameText.setOnClickListener {
-            updateNickname()
+        binding.myName = myName
+        binding.apply {
+            doneButton.setOnClickListener {
+                addNickname()
+            }
+            nicknameText.setOnClickListener {
+                updateNickname()
+            }
         }
     }
 
     private fun addNickname() {
-        binding.nicknameText.text = binding.nicknameEdit.text.toString()
+        binding.apply {
+            myName?.nickname = nicknameEdit.text.toString()
 
-        binding.nicknameText.visibility = View.VISIBLE
-        binding.nicknameEdit.visibility = View.GONE
-        binding.doneButton.visibility = View.GONE
+            nicknameText.visibility = View.VISIBLE
+            nicknameEdit.visibility = View.GONE
+            doneButton.visibility = View.GONE
+
+            // To refresh UI and display new data, invalidate binding expressions.
+            invalidateAll()
+        }
+
     }
 
     private fun updateNickname() {
