@@ -182,3 +182,10 @@ Explanation given in comment format. Follow repos in order.
                       return navController.navigateUp()
                   }  
               ```
+              
+        6. **Options menu**: It is the 3 dot menu on right side of the app bar. It opens a drop down menu. It's generally used to navigate to help or about screen.
+            1. Add `aboutFragment` to navigator.
+            2. Right click res > new resource > menu. Name it `options_menu`.
+            3. Open `options_menu` in design view and add new `menu item`. Name it as `aboutFragment`.
+            4. In [`TitleFragment.kt`](AndroidTrivia-Starter/app/src/main/java/com/example/android/navigation/TitleFragment.kt
+) Enable options menu, override lifecycle functions for menu creation and button click.
