@@ -172,3 +172,13 @@ Explanation given in comment format. Follow repos in order.
              `popUpTo` can be used to edit back button behavior
                 1. Take user to title fragment and not game fragment when back button is pressed from game won / game over fragment.
                 2. When user selects play again but then presses back button, he should be taken to title screen and not game over fragment.
+        
+        5. **Up button navigation**:
+            - Up button is the `<-` button present in top app bar/action bar. Navigation wise it's similar to bottom back button but never takes the user out of the app.
+            - It's implemented using `NavigationUI` library. Call `NavigationUI.setupActionBarWithNavController` and pass `navController` as a parameter. `navController` object is obtained from navigation host fragment. Finally listen to the up button and navigate behind by overriding `onSupportNavigationUp()` lifecycle function.
+            
+                ```kotlin
+              override fun onSupportNavigateUp(): Boolean {
+                      return navController.navigateUp()
+                  }  
+              ```
