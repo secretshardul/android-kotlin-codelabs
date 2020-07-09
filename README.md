@@ -138,3 +138,37 @@ Explanation given in comment format. Follow repos in order.
             return binding.root
         }
         ```
+    2. **Navigation**: Android navigator is a standard library to navigate between fragments.
+        1. Import navigation library from Gradle(see committed code).
+        2. Right click res > new > Android resource file > navigation. Navigation folder is generated which contains navigation xml file. It provides a GUI to setup navigation between different fragments.
+        3. **Navigation host fragment**: It acts as host to navigate between fragments, swapping them in and out as necessary. Add `NavHostFragment` to `activity_main.xml`. `app:defaultNavHost` true sets it as default host, allowing it to intercept back button.
+            
+            ```xml
+           <fragment
+              android:id="@+id/myNavHostFragment"
+              android:name="androidx.navigation.fragment.NavHostFragment"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              app:navGraph="@navigation/navigation"
+              app:defaultNavHost="true"/>
+           ```
+        4. **Back stack**: Each time a user navigates to a new destination, the destination is added to the back stack. When back button is pressed, the topmost destination is popped and the user is taken there. Pop behavior can be modified in 2 ways:
+            1. `popUpTo`: Pops up the stack up to the specified destination. This is exclusive of the specified destination.
+            2. `popUpToInclusive`: If true, the specified destination is also popped. If this is set to app's starting location, then user is taken out of app if back button is pressed.
+                ```xml
+                <fragment
+                   android:id="@+id/gameFragment"
+                   android:name="com.example.android.navigation.GameFragment"
+                   android:label="GameFragment"
+                   tools:layout="@layout/fragment_game" >
+                   <action
+                       android:id="@+id/action_gameFragment_to_gameOverFragment"
+                       app:destination="@id/gameOverFragment"
+                       app:popUpTo="@id/titleFragment"
+                       app:popUpToInclusive="true" />
+                </fragment>
+                ```
+            
+             `popUpTo` can be used to edit back button behavior
+                1. Take user to title fragment and not game fragment when back button is pressed from game won / game over fragment.
+                2. When user selects play again but then presses back button, he should be taken to title screen and not game over fragment.
