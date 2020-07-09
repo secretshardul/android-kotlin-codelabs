@@ -26,21 +26,29 @@ import com.example.android.navigation.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    private lateinit var binding: ActivityMainBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         @Suppress("UNUSED_VARIABLE")
-        val binding = DataBindingUtil.setContentView<ActivityMainBinding>(this, R.layout.activity_main)
-
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
         navController = this.findNavController(R.id.myNavHostFragment) // get from navigation host fragment
-        NavigationUI.setupActionBarWithNavController(this, navController) // set UI and pass controller
+
+        /**
+         * 1. Display up button except on first screen.
+         * 2. Connect drawer to navigation controller. This displays hamburger button.
+         * Drawer is opened when user presses hamburger button or swipes right.
+         */
+        NavigationUI.setupActionBarWithNavController(this, navController, binding.drawerLayout) // set UI, pass controller and drawer layout
+        // Navigate to selected fragment when a navigation drawer option is selected
+        NavigationUI.setupWithNavController(binding.navView, navController)
     }
 
     /**
-     * Navigate up when up button is pressed
+     * When button is pressed, navigate up. If user is at first destination, open drawer on press or swipe.
      */
     override fun onSupportNavigateUp(): Boolean {
-        return navController.navigateUp()
+        return NavigationUI.navigateUp(navController, binding.drawerLayout)
     }
 }

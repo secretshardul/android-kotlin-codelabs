@@ -189,3 +189,13 @@ Explanation given in comment format. Follow repos in order.
             3. Open `options_menu` in design view and add new `menu item`. Name it as `aboutFragment`.
             4. In [`TitleFragment.kt`](AndroidTrivia-Starter/app/src/main/java/com/example/android/navigation/TitleFragment.kt
 ) Enable options menu, override lifecycle functions for menu creation and button click.
+
+        7. **Navigation drawer**: Opened using the hamburger icon / nav drawer icon.
+            1. Import material library to access nav drawer. Add to app level `build.gradle`.
+               ```
+               implementation "com.google.android.material:material:$supportlibVersion"
+               ```
+            2. Add `RulesFragment` to navigator.
+            3. Right click res > new resource > menu. Name it `navdrawer_menu`. This is a regular menu like from previous step which has 2 menu items- `aboutFragment` and `rulesFragment`. Display icons by passing them as parameters.
+            4. Add `DrawerLayout` and `NavigationView` to [`activity_main.xml`](AndroidTrivia-Starter/app/src/main/res/layout/activity_main.xml).
+            5. In [`MainActivity.kt`](AndroidTrivia-Starter/app/src/main/java/com/example/android/navigation/MainActivity.kt) connect drawer to navigation controller. Pass navigation view as parameter to `NavigationUI` in `onSupportNavigateUp()` to navigate user to selected fragment.
