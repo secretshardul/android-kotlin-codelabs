@@ -199,3 +199,41 @@ Explanation given in comment format. Follow repos in order.
             3. Right click res > new resource > menu. Name it `navdrawer_menu`. This is a regular menu like from previous step which has 2 menu items- `aboutFragment` and `rulesFragment`. Display icons by passing them as parameters.
             4. Add `DrawerLayout` and `NavigationView` to [`activity_main.xml`](AndroidTrivia-Starter/app/src/main/res/layout/activity_main.xml).
             5. In [`MainActivity.kt`](AndroidTrivia-Starter/app/src/main/java/com/example/android/navigation/MainActivity.kt) connect drawer to navigation controller. Pass navigation view as parameter to `NavigationUI` in `onSupportNavigateUp()` to navigate user to selected fragment.
+
+    3. **Pass data between fragments**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-start-external-activity
+        
+        1. Add safe args plugin to Gradle. This adds type safety when passing data between fragments or activities. It is a better alternative to passing bundles. This generates `GameFragmentDirections` class.
+        2. For navigation, action ID can be replaced with a directions class method.
+            ```kotlin
+            view.findNavController().navigate((GameFragmentDirections.actionGameFragmentToGameOverFragment()))
+            ```
+        3. To pass type safe parameters, open `navigation.xml` in design view. Open `gameWonFragment` attributes box and add required arguments.
+            ```xml
+            <fragment
+                android:id="@+id/gameWonFragment"
+                android:name="com.example.android.navigation.GameWonFragment"
+                android:label="fragment_game_won"
+                tools:layout="@layout/fragment_game_won" >
+                <action
+                    android:id="@+id/action_gameWonFragment_to_gameFragment"
+                    app:destination="@id/gameFragment"
+                    app:popUpTo="@id/titleFragment" />
+                <!--Mandatory arguments-->
+                <argument
+                    android:name="numQuestions"
+                    app:argType="integer" />
+                <argument
+                    android:name="numCorrect"
+                    app:argType="integer" />
+            </fragment>
+            ```
+        4. Pass `numQuestions` and `numCorrect` arguments when navigating to `gameWonFragment` from `gameFragment`.
+            ```kotlin
+           view.findNavController().navigate(GameFragmentDirections.actionGameFragmentToGameWonFragment(numQuestions, questionIndex))
+            ```
+        5. Receive the arguments
+            ```kotlin
+            val args = GameWonFragmentArgs.fromBundle(arguments!!)
+            Toast.makeText(context, "numQuestions: ${args.numQuestions}, numCorrect: ${args.numCorrect}", Toast.LENGTH_SHORT).show()
+            ```
