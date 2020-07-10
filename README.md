@@ -246,14 +246,26 @@ Explanation given in comment format. Follow repos in order.
     1. Lifecycles and logging
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging
     
-        - Activities and fragments have lifecycles where they undergo state changes. Callbacks are invoked when they transition. Callback operations can be overridden to allow programmability.
-        1. **Activity lifecycle**
-
-            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/f6b25a71cec4e401.png)
-
-        2. **Fragment lifecycle**
-
-            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
+        1. **Android Lifecycles** Activities and fragments have lifecycles where they undergo state changes. Callbacks are invoked when they transition. Callback operations can be overridden to allow programmability.
+            1. **Activity lifecycle**
+    
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/f6b25a71cec4e401.png)
+    
+            2. **Fragment lifecycle**
+    
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
+            
+            3. **`super.onCreate()` and other `super` functions**: `super` is used to execute code from the overridden method in addition to our own code. This step is necessary.
         
-        - `super.onCreate()` and other `super` functions: `super` is used to execute code from the overridden method in addition to our own code. This step is necessary.
-        
+        2. **Timber logger**: Improvement over Android's basic logger. Setup steps
+            1. Import in app level `build.gradle`
+                ```kotlin
+                implementation 'com.jakewharton.timber:timber:4.7.1'
+                ```
+            2. Create Application class [`ClickerApplication`](DessertClicker-Starter/app/src/main/java/com/example/android/dessertclicker/ClickerApplication.kt): `Application` is a base class which holds global app state. Its the main object used by OS to interact with the app. Timber needs to initialize logging through this class.
+            3. Set `ClickerApplication` as Application class in `AndroidManifest.xml`.
+                ```xml
+                <application
+                        android:name=".ClickerApplication"
+                ```
+            4. Replace `Log.i` with `Timber.i` in [`MainActivity`](DessertClicker-Starter/app/src/main/java/com/example/android/dessertclicker/MainActivity.kt)
