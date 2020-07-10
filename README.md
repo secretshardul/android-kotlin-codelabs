@@ -269,3 +269,23 @@ Explanation given in comment format. Follow repos in order.
                         android:name=".ClickerApplication"
                 ```
             4. Replace `Log.i` with `Timber.i` in [`MainActivity`](DessertClicker-Starter/app/src/main/java/com/example/android/dessertclicker/MainActivity.kt)
+        
+        3. **Lifecycle use cases**:
+            1. Activity is opened:
+                ```
+                onCreate() -> onStart() -> onResume()
+                ```
+            1. Closing activity and opening it again: App closed either by swiping or by using back button.
+                ```
+                onPause() -> onStop() -> onDestroy() -> onCreate() -> onStart() -> onResume()
+                ```
+            2. Navigating away and back from the activity: App is put in background using home button or when another activity is brought to the foreground. Here `onRestart()` takes the place of `onDestroy()` and `onCreate()`. It can be used to run code when activity is not started for the first time.
+                ```
+                onPause() -> onStop() -> onRestart() -> onStart() -> onResume()
+                ```
+             3. **Started vs Resumed states**: App is visible in *started state*. Whereas in *resumed state* the app is in focus and user can interact with it. Activity is said to be in **interactive lifecycle** when it is in *resumed state*. Eg. When share button is clicked the activity remains visible but loses focus.
+             
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/9ddc8b1dc79b1bff.png)
+                ```
+                onPause() -> onResume()
+                ```
