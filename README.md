@@ -289,3 +289,27 @@ Explanation given in comment format. Follow repos in order.
                 ```
                 onPause() -> onResume()
                 ```
+                
+        4. **Fragment lifecycle**: Refer next app
+
+8. [AndroidTrivia-Fragment-Lifecycle](AndroidTrivia-Fragment-Lifecycle)
+
+    ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
+    
+    Fragment lifecycle is similar to activity lifecycle with some additional functions. Description tells when these functions are called.
+    1. `onAttach()`: Fragment attached to activity.
+    2. `onCreate()`: Fragment created.
+    3. `onCreateView()`: View inflated into fragment.
+    4. `onActivityCreated()`: Called when owner activity's `onCreate()` is complete.
+    5. `onStart()`: Fragment is visible.
+    6. `onResume()`: Fragment is in focus.
+    7. `onPause()`: Fragment loses focus.
+    8. `onStop()`: Fragment loses visibility.
+    9. `onDestroyView()`: View destroyed.
+    10. `onDestroy()`: Fragment destroyed.
+    11. `onDetach()`: Fragment detached from activity.
+    
+    When user moves to a new fragment, the current fragment is not destroyed. Only the view is destroyed. This can be seen when user navigates back to this fragment
+    ```
+    onPause() -> onStop() -> onDestroyView() -> onCreateView() -> onActivityCreated() -> onStart() -> onResume()
+    ```
