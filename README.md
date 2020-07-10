@@ -241,4 +241,19 @@ Explanation given in comment format. Follow repos in order.
     4. **Pass data to external activities using intents**: Intent is a message used to communicate between android components. It can be used for inter-app communication. In **inplicit intents** the destination activity is not specified. Android either opens the default app or allows user to choose one. This is useful for share functionality.
         1. In [GameWonFragment](AndroidTrivia-Starter/app/src/main/java/com/example/android/navigation/GameWonFragment.kt) use `setHasOptionsMenu()`, `onCreateOptionsMenu()` and `onOptionsItemSelected()` to show `winner_menu`.
         2. When user presses share button, launch a new intent which contains the message to be shared.
+
+7. [DessertClicker-Starter](DessertClicker-Starter)
+    1. Lifecycles and logging
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging
+    
+        - Activities and fragments have lifecycles where they undergo state changes. Callbacks are invoked when they transition. Callback operations can be overridden to allow programmability.
+        1. **Activity lifecycle**
+
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/f6b25a71cec4e401.png)
+
+        2. **Fragment lifecycle**
+
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
+        
+        - `super.onCreate()` and other `super` functions: `super` is used to execute code from the overridden method in addition to our own code. This step is necessary.
         
