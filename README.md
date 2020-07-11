@@ -416,3 +416,11 @@ Explanation given in comment format. Follow repos in order.
                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/4b1c6b4b4c62a8ef.png)
 
         3. Move data and data processing to ViewModel: Now displayed data persists after screen rotation. ViewModel is a better alternative to Bundle for persisting data across lifecycle changes. Bundles have size limitations as well.
+        
+        4. **ViewModelFactory**: A factory method is a method which returns an object. Factory method pattern lets us instantiate `ViewModel` objects with parameters. This is not possible with just `ViewModelProvider`. Here we instantiate `ScoreViewModel` by passing score parameter to `ScoreViewModelFactory`.
+
+            ```kotlin
+            viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
+            viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
+            binding.scoreText.text = viewModel.score.toString()
+            ```
