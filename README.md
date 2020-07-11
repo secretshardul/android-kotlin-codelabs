@@ -378,3 +378,18 @@ Explanation given in comment format. Follow repos in order.
     ```
     onPause() -> onStop() -> onDestroyView() -> onCreateView() -> onActivityCreated() -> onStart() -> onResume()
     ```
+
+9. [GuessTheWord-Starter](GuessTheWord-Starter)
+    1. **Android app architecture, ViewModel and ViewModelFactory**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model
+        
+        1. **Android App clean architecture**: It is based on separation of concerns:
+        
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/d115344705100cf1.png)
+        
+            1. **UI controller**: Includes activity and fragment. It should only perform UI handling- displaying views, accepting inputs etc. It shouldn't have decision making logic.
+            2. **ViewModel**:
+                - Every ViewModel is associated with a UI controller. It holds data to be displayed. It performs calculations and executes decision-making logic.
+                - Unlike fragment or activity, `ViewModel` is not destroyed when app configuration changes. Hence data is stored here for persistence.
+                - But `ViewModel` remains within scope of the fragment, i.e. if current fragment is detached then ViewModel is destroyed.
+            3. **ViewModelFactory**: Instantiates `ViewModel` objects.
