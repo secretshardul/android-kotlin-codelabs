@@ -294,6 +294,22 @@ Explanation given in comment format. Follow repos in order.
         4. **Fragment lifecycle**: Refer next app
         
         5. **Avoid memory leaks**: Resources created in a lifecycle callback should be pulled down in the opposing callback. Eg. If a resource is started in `onStart()`, destroy it in `onStop()`.
+        
+        6. **Lifecycle library**: It lets us shift control from the activity or fragment to the actual component that needs to be lifecycle aware. Instead of calling start and stop timer functions from lifecycle callbacks, we have these functions observe and react to lifecycle changes.
+            1. **Lifecycle owner**: Components which have their own lifecycle, i.e. activities and fragments. They implement the `LifecycleOwner` interface.
+            2. **Lifecycle class**: Contains lifecycle state. It is passed by the lifecycle owner to the component implementing lifecycle library.
+            3. **Lifecycle observer**: Components which observe and react to lifecycle state change. They implement `LifecycleObserver` interface. Here `DesserTimer` is the lifecycle observer.
+        
+         The lifecycle observer functions are triggered using annotations:
+         
+        ```kotlin
+        @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+        fun stopTimer() {
+            // Removes all pending posts of runnable from the handler's queue, effectively stopping the
+            // timer
+            handler.removeCallbacks(runnable)
+        }
+        ```
 
 8. [AndroidTrivia-Fragment-Lifecycle](AndroidTrivia-Fragment-Lifecycle)
 
