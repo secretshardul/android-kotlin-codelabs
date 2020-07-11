@@ -310,7 +310,53 @@ Explanation given in comment format. Follow repos in order.
             handler.removeCallbacks(runnable)
         }
         ```
+   
+        7. **App shutdown and `onSaveInstanceState()`**: Android can shut down background app processes to conserve resources. But to the user it doesn't look like the app has been closed. When user navigates back to the app, android restarts the app. However any data displayed by the app to user is lost. Eg. here deserts sold becomes 0. Also the app's `onDestroy()` method is never called on termination, making it unsuitable for backups.
+        
+            To simulate app termination, put app to background and run shell script:
+            
+            ```sh
+            adb shell am kill com.example.android.dessertclicker
+            ```
+           
+           The **Bundle object** `savedInstanceState` is used to protect data from termination. **Bundle** is stored in RAM and is useful for minimized apps only. Its not a persistent database. `onSaveInstanceState()` and `onCreate()` callbacks are used to save and read bundle respectively. The `onSaveInstanceState()` callback is called after `onStop()` and receives bundle object as a parameter.
+    
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-complex-lifecycle/img/c259ab6beca0ca88.png)
+    
+            By default android stores some views in the bundle. Custom variables need to be added by user.
+            
+            1. To save data
+            ```kotlin
+            /**
+             * Save custom data to bundle. This callback is triggered when app is minimized.
+             */
+            override fun onSaveInstanceState(outState: Bundle?) {
+                outState?.putInt(KEY_REVENUE, revenue)
+                outState?.putInt(KEY_DESSERT_SOLD, dessertsSold)
+                outState?.putInt(KEY_TIMER_SECONDS, dessertTimer.secondsCount)
+                super.onSaveInstanceState(outState)
+        
+                Timber.i("onSaveInstanceState Called")
+            }
+            ```
+           
+           2. To retrieve data in `onCreate()`
+           ```kotlin
+           override fun onCreate(savedInstanceState: Bundle?) {
+               super.onCreate(savedInstanceState)
+       
+               // Retrieve saved data from bundle
+               if(savedInstanceState != null) {
+                   revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
+                   dessertsSold = savedInstanceState.getInt(KEY_DESSERT_SOLD, 0)
+                   dessertTimer.secondsCount = savedInstanceState.getInt(KEY_TIMER_SECONDS, 0)
+                   showCurrentDessert() // Update image based on dessertsSold count
+               }
+           ```
+        
+        App configuration changes like **screen rotation**, language change etc change the device state radically. Android then shuts down and restarts the app. To preserve data, `onSaveInstanceState()` can be used.
 
+        
 8. [AndroidTrivia-Fragment-Lifecycle](AndroidTrivia-Fragment-Lifecycle)
 
     ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
