@@ -245,6 +245,7 @@ Explanation given in comment format. Follow repos in order.
 7. [DessertClicker-Starter](DessertClicker-Starter)
     1. Lifecycles and logging
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-complex-lifecycle
     
         1. **Android Lifecycles** Activities and fragments have lifecycles where they undergo state changes. Callbacks are invoked when they transition. Callback operations can be overridden to allow programmability.
             1. **Activity lifecycle**
@@ -291,6 +292,8 @@ Explanation given in comment format. Follow repos in order.
                 ```
                 
         4. **Fragment lifecycle**: Refer next app
+        
+        5. **Avoid memory leaks**: Resources created in a lifecycle callback should be pulled down in the opposing callback. Eg. If a resource is started in `onStart()`, destroy it in `onStop()`.
 
 8. [AndroidTrivia-Fragment-Lifecycle](AndroidTrivia-Fragment-Lifecycle)
 

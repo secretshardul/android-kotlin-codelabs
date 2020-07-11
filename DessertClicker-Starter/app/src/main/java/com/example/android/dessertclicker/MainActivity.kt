@@ -36,7 +36,8 @@ class MainActivity : AppCompatActivity() {
 
     // Contains all the views
     private lateinit var binding: ActivityMainBinding
-
+    // Timer
+    private lateinit var dessertTimer: DessertTimer
     /** Dessert Data **/
 
     /**
@@ -73,6 +74,8 @@ class MainActivity : AppCompatActivity() {
         binding.dessertButton.setOnClickListener {
             onDessertClicked()
         }
+        // set Timer
+        dessertTimer = DessertTimer()
 
         // Set the TextViews to the right values
         binding.revenue = revenue
@@ -81,6 +84,8 @@ class MainActivity : AppCompatActivity() {
         // Make sure the correct dessert is showing
         binding.dessertButton.setImageResource(currentDessert.imageId)
 
+        dessertTimer.startTimer() // Start timer when activity is created
+        // Timer starts again from previous value if user minimizes activity and then comes back
         Timber.i("onCreate Called") // Basic logging
     }
 
@@ -156,6 +161,8 @@ class MainActivity : AppCompatActivity() {
      */
     override fun onStart() {
         super.onStart()
+//        dessertTimer.startTimer() // Start timer when activity becomes visible
+        // Timer restarts from 0 if user minimizes activity and then comes back
         Timber.i("onStart Called")
     }
 
@@ -171,6 +178,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onStop() {
         super.onStop()
+        dessertTimer.stopTimer() // Stop timer when activity is no longer visible
+        // Memory leak- If timer is not stopped it keeps running even when user minimizes app or presses back
         Timber.i("onStop Called")
     }
 
