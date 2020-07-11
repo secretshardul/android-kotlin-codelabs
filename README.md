@@ -388,8 +388,30 @@ Explanation given in comment format. Follow repos in order.
             ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/d115344705100cf1.png)
         
             1. **UI controller**: Includes activity and fragment. It should only perform UI handling- displaying views, accepting inputs etc. It shouldn't have decision making logic.
+
             2. **ViewModel**:
                 - Every ViewModel is associated with a UI controller. It holds data to be displayed. It performs calculations and executes decision-making logic.
                 - Unlike fragment or activity, `ViewModel` is not destroyed when app configuration changes. Hence data is stored here for persistence.
                 - But `ViewModel` remains within scope of the fragment, i.e. if current fragment is detached then ViewModel is destroyed.
+
             3. **ViewModelFactory**: Instantiates `ViewModel` objects.
+
+        2. **ViewModel creation using ViewModelProvider**
+            1. Create [GameVIewModel.kt](GuessTheWord-Starter/app/src/main/java/com/example/android/guesstheword/screens/game/GameViewModel.kt)
+            2. Initialize `viewModel` in `GameFragment` using `ViewModelProvider`. This ensures that existing viewModel instance is reused when UI controller is destroyed and recreated.
+                ```
+                Log.i("GameFragment", "Called ViewModelProvider")
+                viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
+                ```
+
+                When screen is rotated, GameViewModel is reused and not called again.
+                ```
+                07-11 18:51:41.667 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
+                07-11 18:51:41.669 16315-16315/com.example.android.guesstheword I/GameViewModel: GameViewModel created!
+                07-11 18:52:21.421 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
+                07-11 18:52:27.228 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
+                07-11 19:12:30.803 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of 
+                ```
+               
+               ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/4b1c6b4b4c62a8ef.png)
+           
