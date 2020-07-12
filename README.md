@@ -546,3 +546,13 @@ Explanation given in comment format. Follow repos in order.
                     })
                     ```
 
+         3. String formatting
+            1. Add template to `strings.xml`
+                ```xml
+                <string name="score_format">Current Score: %d</string>
+                ```
+
+            2. Use template to `game_fragment.xml`
+                ```
+                android:text="@{@string/score_format(gameViewModel.score)}"
+                ```
