@@ -436,3 +436,33 @@ Explanation given in comment format. Follow repos in order.
             - It is a wrapper class that can hold data of any type.
             - Observers are used to react to `LiveData` observables.
             - It's lifecycle-aware. It only updates observers when app is in `STARTED` or `RESUMED` state.
+        
+        2. Add `LiveData` and observers
+            - Update [`GameViewModel`](GuessTheWord-Starter/app/src/main/java/com/example/android/guesstheword/screens/game/GameViewModel.kt) with `MutableLiveData` observables. Update references to `word` and `score` with `word.value` and `score.value`.
+            
+                ```kotlin
+                val word = MutableLiveData<String>() // Mutable because value can change
+                val score = MutableLiveData<Int>()
+                ```
+            
+            - Add observers to `GameFragment`
+            
+                ```kotlin
+                /** viewLifecycleOwner
+                 * Pass reference to the fragment view and not fragment itself. The both have different
+                 * lifecycles. Fragment views are destroyed when user navigates away, but not fragment itself.
+                 */
+                viewModel.word.observe(viewLifecycleOwner, Observer {
+                    newWord -> binding.wordText.text = newWord
+                })
+                /**
+                 * Observers help in decoupling. We don't need to update UI manually when correct or skip
+                 * button is pressed. UI is automatically updated when word or score are updated.
+                 */
+                viewModel.score.observe(viewLifecycleOwner, Observer {
+                    newScore -> binding.scoreText.text = newScore.toString()
+                })
+                ```
+            
+            - Remove `updateWordText()` and `updateScoreText()` functions. They're not needed because UI will now be automatically updated.
+               
