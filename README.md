@@ -424,3 +424,15 @@ Explanation given in comment format. Follow repos in order.
             viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
             binding.scoreText.text = viewModel.score.toString()
             ```
+    2. **LiveData**
+    
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-live-data
+
+        1. Theory
+        
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-live-data/img/b608df5e5e5fa4f8.png)
+        
+            - LiveData is an observable data class used to change UI automatically when data changes.
+            - It is a wrapper class that can hold data of any type.
+            - Observers are used to react to `LiveData` observables.
+            - It's lifecycle-aware. It only updates observers when app is in `STARTED` or `RESUMED` state.
