@@ -485,3 +485,4 @@ Explanation given in comment format. Follow repos in order.
             ```
        
         4. Add observable and observer for for game end event. Game ends when words are exhausted.
+        5. `LiveData` to show score and restart game
