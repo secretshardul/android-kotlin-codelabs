@@ -521,3 +521,28 @@ Explanation given in comment format. Follow repos in order.
                 ```kotlin
                 binding.skipButton.setOnClickListener { onSkip() }
                 ```
+
+        2. **LiveData and data binding**: Data binding can allow LiveData present in `ViewModel` to automatically update binding without need of observers.
+        
+                1. Assign fragment view as binding's lifecycle owner
+                
+                    ```kotlin
+                    binding.lifecycleOwner = viewLifecycleOwner
+                    ```
+                
+                2. Access LiveData variables in view
+                
+                    ```
+                    <TextView
+                        android:id="@+id/score_text"
+                        android:text="@{scoreViewModel.score.toString()}" />
+                    ```
+                
+                3. Remove observer
+                
+                    ```kotlin
+                    viewModel.score.observe(viewLifecycleOwner, Observer {
+                        newScore -> binding.scoreText.text = newScore.toString()
+                    })
+                    ```
+

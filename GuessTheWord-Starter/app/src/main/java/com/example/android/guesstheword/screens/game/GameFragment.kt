@@ -59,16 +59,11 @@ class GameFragment : Fragment() {
          * Pass reference to the fragment view and not fragment itself. The both have different
          * lifecycles. Fragment views are destroyed when user navigates away, but not fragment itself.
          */
-        viewModel.word.observe(viewLifecycleOwner, Observer {
-            newWord -> binding.wordText.text = newWord
-        })
-        /**
-         * Observers help in decoupling. We don't need to update UI manually when correct or skip
-         * button is pressed. UI is automatically updated when word or score are updated.
+        /** LiveData and data binding
+         * Assign fragment view as binding's lifecycle owner so LiveData can automatically update
+         * binding. This removes need of using LiveData observables to update binding.
          */
-        viewModel.score.observe(viewLifecycleOwner, Observer {
-            newScore -> binding.scoreText.text = newScore.toString()
-        })
+        binding.lifecycleOwner = viewLifecycleOwner
 
         viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer {
             if(it) {

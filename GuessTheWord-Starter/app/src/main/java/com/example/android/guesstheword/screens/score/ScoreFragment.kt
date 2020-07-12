@@ -54,12 +54,7 @@ class ScoreFragment : Fragment() {
         viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
 
         binding.scoreViewModel = viewModel
-
-        /** Do not be overzealous with LiveData. It was not needed in these 2 cases. **/
-        // Display score using LiveData
-        viewModel.score.observe(viewLifecycleOwner, Observer {
-            binding.scoreText.text = viewModel.score.value.toString()
-        })
+        binding.lifecycleOwner = viewLifecycleOwner
 
         // Navigate on button click using LiveData
         viewModel.eventPlayAgain.observe(viewLifecycleOwner, Observer {
