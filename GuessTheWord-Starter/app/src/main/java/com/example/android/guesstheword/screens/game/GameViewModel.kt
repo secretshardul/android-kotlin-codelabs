@@ -6,19 +6,27 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 
 class GameViewModel : ViewModel() {
-    // The current word
-    val word = MutableLiveData<String>() // Mutable because value can change
+    /** Encapsulation
+     * Only this class has write access to _word and _score. These MutableLiveData fields are private.
+     * Outside classes should have read-only access. word and score are public but of LiveData type.
+     * LiveData fields can't be modified.
+     */
+    private val _word = MutableLiveData<String>() // Mutable because value can change
+    // Pass value using Kotlin getter
+    val word: LiveData<String> // Not mutable
+        get() = _word
 
-    // The current score
-    val score = MutableLiveData<Int>()
+    private val _score = MutableLiveData<Int>()
+    val score: LiveData<Int>
+        get() = _score
 
     // The list of words - the front of the list is the next word to guess
     private lateinit var wordList: MutableList<String>
 
     init {
         Log.i("GameViewModel", "GameViewModel created!")
-        word.value = ""
-        score.value = 0
+        _word.value = ""
+        _score.value = 0
         resetList()
         nextWord()
     }
@@ -64,12 +72,12 @@ class GameViewModel : ViewModel() {
     /** Methods for buttons presses **/
 
     fun onSkip() {
-        score.value = score.value?.minus(1)
+        _score.value = score.value?.minus(1)
         nextWord()
     }
 
     fun onCorrect() {
-        score.value = score.value?.plus(1)
+        _score.value = score.value?.plus(1)
         nextWord()
     }
 
@@ -79,7 +87,7 @@ class GameViewModel : ViewModel() {
     fun nextWord() {
         if (!wordList.isEmpty()) {
             //Select and remove a word from the list
-            word.value = wordList.removeAt(0)
+            _word.value = wordList.removeAt(0)
         }
     }
 }

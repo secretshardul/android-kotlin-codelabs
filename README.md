@@ -466,3 +466,20 @@ Explanation given in comment format. Follow repos in order.
             
             - Remove `updateWordText()` and `updateScoreText()` functions. They're not needed because UI will now be automatically updated.
                
+        3. **LiveData encapsulation**: Encapsulate `LiveData` to provide read-only access to outside classes.
+            
+            ```kotlin
+            /** Encapsulation
+             * Only this class has write access to _word and _score. These MutableLiveData fields are private.
+             * Outside classes should have read-only access. word and score are public but of LiveData type.
+             * LiveData fields can't be modified.
+             */
+            private val _word = MutableLiveData<String>() // Mutable because value can change
+            // Pass value using Kotlin getter
+            val word: LiveData<String> // Not mutable
+                get() = _word
+            
+            private val _score = MutableLiveData<Int>()
+            val score: LiveData<Int>
+                get() = _score
+            ```
