@@ -53,10 +53,7 @@ class GameFragment : Fragment() {
 
         Log.i("GameFragment", "Called ViewModelProvider")
         viewModel = ViewModelProvider(this).get(GameViewModel::class.java)
-
-        binding.correctButton.setOnClickListener { onCorrect() }
-        binding.skipButton.setOnClickListener { onSkip() }
-        binding.endGameButton.setOnClickListener { onEndGame() }
+        binding.gameViewModel = viewModel
 
         /** viewLifecycleOwner
          * Pass reference to the fragment view and not fragment itself. The both have different
@@ -83,14 +80,6 @@ class GameFragment : Fragment() {
     }
 
     /** Methods for buttons presses **/
-
-    private fun onSkip() {
-        viewModel.onSkip() // Reduces score, moves to next word
-    }
-
-    private fun onCorrect() {
-        viewModel.onCorrect() // Increases score, moves to next word
-    }
 
     private fun onEndGame() {
         Toast.makeText(activity, "Game has just finished", Toast.LENGTH_SHORT).show()

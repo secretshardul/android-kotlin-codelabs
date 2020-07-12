@@ -53,6 +53,8 @@ class ScoreFragment : Fragment() {
         viewModelFactory = ScoreViewModelFactory(ScoreFragmentArgs.fromBundle(arguments!!).score)
         viewModel = ViewModelProvider(this, viewModelFactory).get(ScoreViewModel::class.java)
 
+        binding.scoreViewModel = viewModel
+
         /** Do not be overzealous with LiveData. It was not needed in these 2 cases. **/
         // Display score using LiveData
         viewModel.score.observe(viewLifecycleOwner, Observer {
@@ -66,9 +68,6 @@ class ScoreFragment : Fragment() {
                 viewModel.onPlayAgainComplete()
             }
         })
-        binding.playAgainButton.setOnClickListener {
-            viewModel.onPlayAgain()
-        }
 
         return binding.root
     }

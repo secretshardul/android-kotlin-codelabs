@@ -94,8 +94,13 @@ class GameViewModel : ViewModel() {
             _word.value = wordList.removeAt(0)
         }
         else {
-            _eventGameFinish.value = true
+            onGameFinish()
         }
+    }
+
+    /** Call to end game **/
+    fun onGameFinish() {
+        _eventGameFinish.value = true
     }
 
     /** Method for the game completed event. Reset _eventGameFinish value. **/

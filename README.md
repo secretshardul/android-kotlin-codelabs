@@ -486,3 +486,38 @@ Explanation given in comment format. Follow repos in order.
        
         4. Add observable and observer for for game end event. Game ends when words are exhausted.
         5. `LiveData` to show score and restart game
+    
+    2. **Data binding with `LiveData` and `ViewModel`**: We connect ViewModel directly to view via data binding instead of using fragments as an intermediary.
+        1. **Listener binding**: Directly bind listener methods in `ViewModel` to XML view buttons. This removes need of setting listeners in Fragments.
+            1. Pass `viewModel` as a data class to XML view
+                - In `game_fragment.xml`
+                
+                    ```xml
+                    <layout xmlns:android="http://schemas.android.com/apk/res/android"
+                        xmlns:app="http://schemas.android.com/apk/res-auto"
+                        xmlns:tools="http://schemas.android.com/tools">
+                    
+                        <data>
+                            <variable
+                                name="gameViewModel"
+                                type="com.example.android.guesstheword.screens.game.GameViewModel" />
+                        </data>
+                    ```
+                - In `GameFragment.xml`
+                    ```kotlin
+                    binding.gameViewModel = viewModel
+                    ```
+            
+            2. Listener binding: Bind button click listener to `viewModel` methods.
+            
+                ```xml
+                <Button
+                    android:id="@+id/skip_button"
+                    android:onClick="@{() -> gameViewModel.onSkip()}" />
+                ```
+            
+            3. Remove click handlers from fragment.
+            
+                ```kotlin
+                binding.skipButton.setOnClickListener { onSkip() }
+                ```
