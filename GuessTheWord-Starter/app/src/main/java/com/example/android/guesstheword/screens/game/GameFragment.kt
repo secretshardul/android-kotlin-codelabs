@@ -72,6 +72,12 @@ class GameFragment : Fragment() {
         viewModel.score.observe(viewLifecycleOwner, Observer {
             newScore -> binding.scoreText.text = newScore.toString()
         })
+
+        viewModel.eventGameFinish.observe(viewLifecycleOwner, Observer {
+            if(it) {
+                onEndGame()
+            }
+        })
         return binding.root
 
     }
@@ -91,5 +97,15 @@ class GameFragment : Fragment() {
         val navigationAction = GameFragmentDirections.actionGameToScore()
         navigationAction.score = viewModel.score.value ?: 0
         NavHostFragment.findNavController(this).navigate(navigationAction)
+
+        /** Rotation toast bug fix
+         * Screen rotation causes game finished toast message to reappear. This is because observers
+         * are triggered in 2 cases
+         *  1. Observable data changes
+         *  2. Observer's state changes: Here rotation causes fragment and observer to be recreated.
+         *  `onEndGame()` gets triggered again.
+         * To prevent this reset eventGameFinish observable to false once toast is shown.
+         */
+        viewModel.onGameFinishComplete()
     }
 }

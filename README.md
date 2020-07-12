@@ -483,3 +483,5 @@ Explanation given in comment format. Follow repos in order.
             val score: LiveData<Int>
                 get() = _score
             ```
+       
+        4. Add observable and observer for for game end event. Game ends when words are exhausted.
