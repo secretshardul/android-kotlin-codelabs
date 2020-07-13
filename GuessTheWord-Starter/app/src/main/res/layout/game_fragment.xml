@@ -145,5 +145,18 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="@+id/guideline" />
 
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="36dp"
+            android:text="@{gameViewModel.hint}"
+            android:fontFamily="sans-serif"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@+id/timer_text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            tools:text="Current word has 4 letters\nThe Letter at position 2 is U"/>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
