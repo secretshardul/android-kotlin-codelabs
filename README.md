@@ -580,3 +580,14 @@ Explanation given in comment format. Follow repos in order.
            android:id="@+id/timer_text"
            android:text="@{gameViewModel.currentTime}" />
        ```
+
+10. [TrackMySleepQuality-Starter](TrackMySleepQuality-Starter)
+    1. **Room database**:
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-room-database
+        
+        1. **Theory**
+            - Room is an abstraction library over SQLite.
+            - It helps us handle:
+                1. **Entity**: Represents an object and its properties stored in the database. Each entity is a row and every property is a column. An **entity class** defines a table. Each entity is defined as an **annotated data class**.
+                2. **Query**: Used for CRUD operations. Database interactions are defined using a **data access object(DAO)**. DAO provides convenience methods for CRUD operations. It's is created using an **annotated interface**.
+                
