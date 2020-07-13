@@ -556,3 +556,27 @@ Explanation given in comment format. Follow repos in order.
                 ```
                 android:text="@{@string/score_format(gameViewModel.score)}"
                 ```
+
+    2. **LiveData transformations**: Transformations allow us to perform manipulations on one `LiveData` object and return a new `LiveData` object. It is comparable to `map()` operation in JavaScript.
+    
+        **Properties**
+            - Transformations run in the UI thread so shouldn't be used for computationally intensive tasks.
+            - Transformations are not calculated unless an observer function is observing the transformed `LiveData`.
+    
+        1. In [`GameViewModel.kt`](GuessTheWord-Starter/app/src/main/java/com/example/android/guesstheword/screens/game/GameViewModel.kt)
+        ```kotlin
+        /** Display remaining game time to user. Game ends when time becomes 0 **/
+        private val _currentTime = MutableLiveData<Long>()
+        // Map time in MM:SS format
+        val currentTime: LiveData<String>
+            get() = Transformations.map(_currentTime) {
+                DateUtils.formatElapsedTime(it)
+            }
+        ```
+       
+       2. Use the transformed string `LiveData` in [`game_fragment.xml`](GuessTheWord-Starter/app/src/main/res/layout/game_fragment.xml)
+       ```xml
+       <TextView
+           android:id="@+id/timer_text"
+           android:text="@{gameViewModel.currentTime}" />
+       ```
