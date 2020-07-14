@@ -596,3 +596,7 @@ Explanation given in comment format. Follow repos in order.
             2. `@PrimaryKey`: Define a field as primary key
             3. `@Entity`: Create column for given field
 
+        3. **Create DAO**: Room provides annotations for creating DAO. Look at [`SleepDatabaseDao.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepDatabaseDao.kt)
+            1. `@Dao`: All DAOs need to be annotated with this.
+            2. `@Insert`, `@Update`, `@Delete`: Convenience annotations. `@Update` and `@Delete` work for single items and need primary key.
+            3. `@Query`: Run ad-hoc queries
