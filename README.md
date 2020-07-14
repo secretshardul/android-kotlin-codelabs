@@ -602,3 +602,19 @@ Explanation given in comment format. Follow repos in order.
             3. `@Query`: Run ad-hoc queries
             
         4. **Database creation**: `@Database` generates database, entities and DAOs. Look at [`SleepDatabase.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepDatabase.kt)
+
+    2. **Coroutines**:
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-coroutines-and-room
+
+        1. Theory:
+            - Coroutines provide a way to perform long-running asynchronous tasks in a non-blocking manner. Non-blocking means that the UI thread is not blocked, giving a smooth experience.
+            - Like async await in Javascript, they help convert callback based code to sequential code.
+            - **Suspend functions**: Coroutines execute functions with `suspend` keyword. When a `suspend` function is called, the calling thread is suspended. **Suspended thread** is different from **blocked thread**. The suspended thread is free to perform other tasks until the function returns a result.
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-coroutines-and-room/img/ce77d98e12909f3e.png)
+            - Suspend functions can run on the UI thread or in a background thread.
+            - Coroutines have 3 parts:
+                1. **Job**: They're tasks that can be cancelled. Jobs can be arranged in a parent-child hierarchy. Cancelling the parent job cancels all its children.
+                2. **Dispatcher**: It sends off coroutines to run on different threads. Eg. `Dispatcher.Main` runs on main thread.
+                3. **Scope**: Contains information about job and dispatcher. It keeps track of coroutines and defines the context in which they run.
+                
+            
