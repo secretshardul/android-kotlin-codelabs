@@ -600,3 +600,5 @@ Explanation given in comment format. Follow repos in order.
             1. `@Dao`: All DAOs need to be annotated with this.
             2. `@Insert`, `@Update`, `@Delete`: Convenience annotations. `@Update` and `@Delete` work for single items and need primary key.
             3. `@Query`: Run ad-hoc queries
+            
+        4. **Database creation**: `@Database` generates database, entities and DAOs. Look at [`SleepDatabase.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepDatabase.kt)

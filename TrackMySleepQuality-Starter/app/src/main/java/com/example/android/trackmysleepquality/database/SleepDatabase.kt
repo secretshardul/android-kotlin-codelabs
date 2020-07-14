@@ -15,3 +15,45 @@
  */
 
 package com.example.android.trackmysleepquality.database
+
+import android.content.Context
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
+
+@Database(entities = [SleepNight::class], version = 1, exportSchema = false)
+abstract class SleepDatabase : RoomDatabase() {
+    // Database can have multiple DAOs
+    abstract val sleepDatabaseDao: SleepDatabaseDao
+
+    // Companion object- Allows method access without creating object. It is similar to 'static' in Java.
+    companion object {
+        @Volatile // INSTANCE should not be cached for consistent access during multi-threading.
+        private var INSTANCE: SleepDatabase? = null // Holds reference to database, once created
+
+        /**
+         * Return database reference. If database does not exist, it is created.
+         */
+        fun getInstance(context: Context): SleepDatabase {
+
+            synchronized(this) { // Only 1 thread gets access to database at a time for consistency
+
+                var instance = INSTANCE
+                if (instance == null) { // Build database if it does not exist
+                    instance = Room.databaseBuilder(
+                            context.applicationContext,
+                            SleepDatabase::class.java,
+                            "sleep_history_database"
+                    ).fallbackToDestructiveMigration().build()
+                    /** Migration strategy
+                     * Needed during Room database creation. The simplest strategy is
+                     * `fallbackToDestructiveMigration()` where existing data is destroyed.
+                     */
+
+                    INSTANCE = instance
+                }
+                return instance
+            }
+        }
+    }
+}
