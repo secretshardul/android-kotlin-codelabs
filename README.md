@@ -590,4 +590,9 @@ Explanation given in comment format. Follow repos in order.
             - It helps us handle:
                 1. **Entity**: Represents an object and its properties stored in the database. Each entity is a row and every property is a column. An **entity class** defines a table. Each entity is defined as an **annotated data class**.
                 2. **Query**: Used for CRUD operations. Database interactions are defined using a **data access object(DAO)**. DAO provides convenience methods for CRUD operations. It's is created using an **annotated interface**.
-                
+        
+        2. **Create entity using data class**: Room provides annotations to create entities. Look at [`SleepNight.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepNight.kt)
+            1. `@Entity`: Holds table name
+            2. `@PrimaryKey`: Define a field as primary key
+            3. `@Entity`: Create column for given field
+
