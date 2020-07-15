@@ -617,4 +617,23 @@ Explanation given in comment format. Follow repos in order.
                 2. **Dispatcher**: It sends off coroutines to run on different threads. Eg. `Dispatcher.Main` runs on main thread.
                 3. **Scope**: Contains information about job and dispatcher. It keeps track of coroutines and defines the context in which they run.
                 
+        2. **Implementation**: Use [`SleepTrackerViewModel`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerViewModel.kt) to access database and update UI using coroutines. A general pattern is seen here:
+            1. Launch coroutine in main/UI thread. This is because `SleepTrackerViewModel` has to update UI.
+            2. Call suspend function for long running tasks so UI thread is not blocked.
+            3. Run the suspend function code in separate thread using IO dispatcher. This is because suspend function only accesses database, it has nothing to do with UI.
             
+            ```kotlin
+            fun someWorkNeedsToBeDone {
+               uiScope.launch {
+            
+                    suspendFunction()
+            
+               }
+            }
+            
+            suspend fun suspendFunction() {
+               withContext(Dispatchers.IO) {
+                   longrunningWork()
+               }
+            }
+            ```

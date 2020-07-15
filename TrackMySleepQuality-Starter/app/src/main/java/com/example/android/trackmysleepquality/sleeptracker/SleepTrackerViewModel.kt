@@ -17,8 +17,16 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
 import android.app.Application
+import android.provider.SyncStateContract.Helpers.update
+import android.text.Spanned
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Transformations
 import com.example.android.trackmysleepquality.database.SleepDatabaseDao
+import com.example.android.trackmysleepquality.database.SleepNight
+import com.example.android.trackmysleepquality.formatNights
+import kotlinx.coroutines.*
 
 /**
  * ViewModel for SleepTrackerFragment.
@@ -26,5 +34,111 @@ import com.example.android.trackmysleepquality.database.SleepDatabaseDao
 class SleepTrackerViewModel(
         val database: SleepDatabaseDao,
         application: Application) : AndroidViewModel(application) {
+
+    private var viewModelJob = Job()
+    // Scope- Run viewModelJob on main thread because UI has to be updated
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private var tonight = MutableLiveData<SleepNight?>() // holds current night
+    private val nights = database.getAllNights()
+
+    // Transform list into HTML formatted string for display
+    val nightsString: LiveData<Spanned> = Transformations.map(nights) {
+        formatNights(it, application.resources)
+    }
+
+    init {
+        initializeTonight()
+    }
+
+    /** Coroutine functions: They run coroutines on main thread because they update UI. **/
+
+    /** Set tonight value. Called by constructor. **/
+    private fun initializeTonight() {
+        // Launch coroutine
+        uiScope.launch {
+            tonight.value = getTonightFromDatabase()
+        }
+    }
+
+    /**
+     * Function to track night
+     *
+     * - Called when start button is clicked.
+     * - Create new night, insert it to database, fetch it back as `tonight`.
+     */
+    fun onStartTracking() {
+        uiScope.launch {
+            val newNight = SleepNight()
+            insert(newNight)
+            tonight.value = getTonightFromDatabase()
+
+        }
+    }
+
+    /**
+     * Function to stop tracking night
+     *
+     * - Called when stop button is clicked.
+     * - Get `tonight` object, update its end time and update database.
+     */
+    fun onStopTracking() {
+        uiScope.launch {
+            // return@ specifies the function from which the statement returns, in nested functions
+            val oldNight = tonight.value ?: return@launch //Return from launch function
+            oldNight.endTimeMilli = System.currentTimeMillis()
+            update(oldNight)
+        }
+    }
+
+    /**
+     * Function to clear all night data
+     *
+     * Called when clear button is clicked.
+     */
+    fun onClear() {
+        uiScope.launch {
+            clear()
+        }
+    }
+
+    /** Suspend functions: They run coroutines on IO thread because they don't update UI/  **/
+
+    private suspend fun getTonightFromDatabase():SleepNight? {
+        return withContext(Dispatchers.IO) {
+            var night = database.getTonight()
+            // Return non-null if night is still active, ie. end time is not yet assigned
+            if(night?.startTimeMilli != night?.endTimeMilli) {
+                night = null
+            }
+            night
+        }
+    }
+
+    private suspend fun insert(night: SleepNight) {
+        withContext(Dispatchers.IO) {
+            database.insert(night)
+        }
+    }
+
+    private suspend fun update(night: SleepNight) {
+        withContext(Dispatchers.IO) {
+            database.update(night)
+        }
+    }
+
+    private suspend fun clear() {
+        withContext(Dispatchers.IO) {
+            database.clear()
+        }
+    }
+
+    /**
+     * Called when ViewModel is destroyed
+     */
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel()
+    }
 }
 
