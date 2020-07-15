@@ -623,7 +623,7 @@ Explanation given in comment format. Follow repos in order.
             3. Run the suspend function code in separate thread using IO dispatcher. This is because suspend function only accesses database, it has nothing to do with UI.
             
             ```kotlin
-            fun someWorkNeedsToBeDone {
+            fun someWorkNeedsToBeDone() {
                uiScope.launch {
             
                     suspendFunction()
@@ -637,3 +637,15 @@ Explanation given in comment format. Follow repos in order.
                }
             }
             ```
+           
+           Alternatively `suspend` function's code can be directly added to the coroutine
+           
+           ```kotlin
+            fun someWorkNeedsToBeDone() {
+               uiScope.launch {
+                    withContext(Dispatchers.IO) {
+                       longrunningWork()
+                    }
+               }
+            }
+           ```
