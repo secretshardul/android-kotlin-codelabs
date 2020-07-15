@@ -17,7 +17,6 @@
 package com.example.android.trackmysleepquality.sleeptracker
 
 import android.app.Application
-import android.provider.SyncStateContract.Helpers.update
 import android.text.Spanned
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
@@ -74,6 +73,16 @@ class SleepTrackerViewModel(
         it.isNotEmpty()
     }
 
+    /** To display snackbar when clear button is pressed **/
+    private val _showSnackbarEvent  = MutableLiveData<Boolean>()
+    val showConfirmationSnackbar: LiveData<Boolean>
+            get() = _showSnackbarEvent
+
+    /** Reset after snackbar is displayed **/
+    fun doneShowingSnackbar() {
+        _showSnackbarEvent.value = false
+    }
+
     /** Coroutine functions: They run coroutines on main thread because they update UI. **/
 
     /** Set tonight value. Called by constructor. **/
@@ -123,6 +132,7 @@ class SleepTrackerViewModel(
      */
     fun onClear() {
         uiScope.launch {
+            _showSnackbarEvent.value = true
             clear()
         }
     }
