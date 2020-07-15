@@ -649,3 +649,28 @@ Explanation given in comment format. Follow repos in order.
                }
             }
            ```
+
+    3. **Recycler view**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals
+    
+        1. **Theory**: Recycler view is an efficient way to display large lists in Android
+            1. Only processes items currently displayed on screen.
+            2. When an item scrolls off the screen, its view is recycled by another screen.
+            3. Recycler view uses adapter pattern
+            
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/dcf4599789b9c2a1.png)
+                
+        2. **Adapter pattern**: It helps an object work with another API. `RecyclerView` uses adapter pattern to transform app data into something it can display, without changing how the data is stored or processed.
+
+        3. `RecyclerView` needs the following:
+
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/4e9c18b463f00bf7.png)
+
+            1. Data to display
+            2. `RecyclerView` instance in layout file: Acts as a container for views.
+            3. A layout file for item displayed by `RecyclerView`: Multiple layouts can be used in same `RecyclerView`.
+            4. **Layout manager**: Tells how to position items of the `RecyclerView`. Android provides layout managers like `LinearLayoutManager` which lays items in a full width vertical list.
+            5. **View holder**: Contains information to be displayed. It extends the `ViewHolder` class.
+            6. **Adapter**: Connects data to `RecyclerView` and adapts it into a displayable format.
+
+        4. 
