@@ -47,9 +47,19 @@ class SleepTrackerViewModel(
         formatNights(it, application.resources)
     }
 
+    // Observe for change and navigate to sleep quality screen
+    private val _navigateToSleepQuality = MutableLiveData<SleepNight>()
+    val navigateToSleepQuality: LiveData<SleepNight>
+        get() = _navigateToSleepQuality
+
     init {
         initializeTonight()
     }
+
+    fun doneNavigating() {
+        _navigateToSleepQuality.value = null
+    }
+
 
     /** Coroutine functions: They run coroutines on main thread because they update UI. **/
 
@@ -88,6 +98,8 @@ class SleepTrackerViewModel(
             val oldNight = tonight.value ?: return@launch //Return from launch function
             oldNight.endTimeMilli = System.currentTimeMillis()
             update(oldNight)
+
+            _navigateToSleepQuality.value = oldNight // To navigate to sleep quality screen
         }
     }
 
