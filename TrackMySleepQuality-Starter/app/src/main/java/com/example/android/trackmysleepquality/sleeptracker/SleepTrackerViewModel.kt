@@ -60,6 +60,19 @@ class SleepTrackerViewModel(
         _navigateToSleepQuality.value = null
     }
 
+    /** Button visibility options **/
+    /** Start button- visible only if a night is not being tracked **/
+    val startButtonVisible: LiveData<Boolean> = Transformations.map(tonight) {
+        it == null
+    }
+    /** Stop button- visible only if night is being tracked **/
+    val stopButtonVisible: LiveData<Boolean> = Transformations.map(tonight) {
+        it != null
+    }
+    /** Clear button- visible only if night list is not empty **/
+    val clearButtonVisible: LiveData<Boolean> = Transformations.map(nights) {
+        it.isNotEmpty()
+    }
 
     /** Coroutine functions: They run coroutines on main thread because they update UI. **/
 
