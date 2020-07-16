@@ -39,7 +39,7 @@ class SleepTrackerViewModel(
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
 
     private var tonight = MutableLiveData<SleepNight?>() // holds current night
-    private val nights = database.getAllNights()
+    val nights = database.getAllNights()
 
     // Transform list into HTML formatted string for display
     val nightsString: LiveData<Spanned> = Transformations.map(nights) {

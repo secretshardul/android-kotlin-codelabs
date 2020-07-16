@@ -673,4 +673,53 @@ Explanation given in comment format. Follow repos in order.
             5. **View holder**: Contains information to be displayed. It extends the `ViewHolder` class.
             6. **Adapter**: Connects data to `RecyclerView` and adapts it into a displayable format.
 
-        4. 
+        4. Implementation
+            1. Add `RecyclerView` to [`fragment_sleep_tracker.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/fragment_sleep_tracker.xml). Set `LayoutManager` to `LinearLayoutManager`:
+                
+                ```
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                ```
+
+            2. Create [`text_item_view.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/text_item_view.xml) which holds the layout of items to be displayed.
+            
+            3. Create text view holder `TextItemViewHolder` in [`Util.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/Util.kt)
+            
+            4. Create adapter [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) based on `TextItemViewHolder`. Create `data` variable which holds data to be displayed and a setter to update it.
+            
+                ```kotlin
+                var data = listOf<SleepNight>()
+                set(value) { // Setter to replace data
+                    field = value
+                    notifyDataSetChanged() // RecyclerView redraws list with new data when this is called
+                }
+                ```
+                
+                Override 3 methods needed by `RecyclerView`:
+                    1. `getItemCount()`
+                    2. `onCreateViewHolder()`: Returns inflated view holder.
+                    3. `onBindViewHolder()`: Returns data for item at specified position. It can perform conditional operations on individual items:
+                    
+                        ```kotlin
+                        override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
+                            val item = data[position]
+                            holder.textView.text = item.sleepQuality.toString()
+                            if(item.sleepQuality in listOf<Int>(0, 1)) { // Display red text for low sleep score
+                                holder.textView.setTextColor(Color.RED)
+                            }
+                        }
+                        ```
+
+            5. In [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) pass data to adapter and connect it to `RecyclerView`.
+            
+                ```kotlin
+                // Initialize adapter
+                val adapter = SleepNightAdapter()
+                // Pass LiveData into adapter
+                sleepTrackerViewModel.nights.observe(this, Observer {nights ->
+                    nights?.let {
+                        adapter.data = nights
+                    }
+                })
+                // Connect RecyclerView with adapter
+                binding.sleepList.adapter = adapter
+                ```
