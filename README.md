@@ -743,3 +743,9 @@ Explanation given in comment format. Follow repos in order.
                 ```
 
             3. Use the `ViewHolder` and layout in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt)
+
+        7. Code improvements: Refactor code so that logic related to `ViewHolder` lies in `ViewHolder` class only. Look at [`SleepNightAdapter.kt` file](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt).
+
+            1. `from()` method: Return inflated `ViewHolder` object to adapter's `onCreateViewHolder()` method. This function should be callable from `ViewHolder` class so it's added in a companion object.
+            2. `bind()` method: Binds data to `ViewHolder` object at specified position. It's called from the `ViewHolder` object received by `onBindViewHolder()` method.
+            3. Make `ViewHolder` class' constructor private. It's not publicly used since `ViewHolder` instances are created by `from()` method.
