@@ -797,3 +797,20 @@ Explanation given in comment format. Follow repos in order.
                 ```xml
                 <TextView app:sleepQualityString="@{sleepNight}" />
                 ```
+
+        10. **Grid layout using layout manager**:
+            - Grid layout can either be scrolled in vertical(default) or horizontal direction.
+            - It arranges items in rows and columns.
+            - **Span**: Span count defines
+                - Number of columns in a row for vertical(default) scroll; or
+                - Number of rows in a column for horizontal scroll
+
+                We can set up the number of spans taken by an items for custom behavior. Eg. an item 3 span wide in a 3 span grid view occupies the entire row.
+
+            **To set up Grid layout**
+            1. Remove `LinearLayoutManager` from [`fragment_sleep_tracker.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/fragment_sleep_tracker.xml).
+            2. Setup `GridLayoutManager` in [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt).            
+                ```kotlin
+                val manager = GridLayoutManager(activity, 3) // 3 span wide grid layout
+                ```              
+            3. Update view holder layout in [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml).
