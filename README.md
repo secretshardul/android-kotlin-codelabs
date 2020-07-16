@@ -86,6 +86,8 @@ Explanation given in comment format. Follow repos in order.
     Data binding uses:
         1. Eliminate `findViewById()`
         2. Data binding to display data: Data is used to directly make a **data class** available to a view. Here `MyName` data class is used to provide name and nickname to `activity_main.xml`. Special `<data>`, `<variable>` and `@{}` syntax is used to pass a data class to the layout.
+        
+        **Binding adapters**: Look at recycler view section.
     
 5. [ColorMyViews](/ColorMyViews): `ContraintLayout`
 
@@ -777,4 +779,21 @@ Explanation given in comment format. Follow repos in order.
                         adapter.submitList(nights) // ListAdapter provides function to update list
                     }
                 })
+                ```
+
+        9. **Binding adapters**: They extend data binding functionality by allowing *custom attributes* in XML layout files. They're an alternative to transformation based data binding for complex data.
+
+            1. Define binding adapters in [`BindingUtils.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/BindingUtils.kt) using `@BindingAdapter` annotation
+
+                ```kotlin
+                @BindingAdapter("sleepDurationFormatted")
+                fun TextView.setSleepDurationFormatted(item: SleepNight) {
+                    text = convertDurationToFormatted(item.startTimeMilli, item.endTimeMilli, context.resources)
+                }
+                ```
+
+            2. Use adapter in [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml)
+
+                ```xml
+                <TextView app:sleepQualityString="@{sleepNight}" />
                 ```
