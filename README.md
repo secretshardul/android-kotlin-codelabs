@@ -749,3 +749,32 @@ Explanation given in comment format. Follow repos in order.
             1. `from()` method: Return inflated `ViewHolder` object to adapter's `onCreateViewHolder()` method. This function should be callable from `ViewHolder` class so it's added in a companion object.
             2. `bind()` method: Binds data to `ViewHolder` object at specified position. It's called from the `ViewHolder` object received by `onBindViewHolder()` method.
             3. Make `ViewHolder` class' constructor private. It's not publicly used since `ViewHolder` instances are created by `from()` method.
+
+        8. **`DiffUtil` and `RecyclerView`**
+            > https://codelabs.developers.google.com/codelabs/kotlin-android-training-diffutil-databinding
+            
+            Earlier `RecyclerView` data was updated using `notifyDataSetChanged()` in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt). But this is an inefficient method which invalidates entire list to have it redrawn.
+    
+            ```kotlin
+            var data = listOf<SleepNight>()
+            set(value) { // Setter to replace data
+                field = value
+                notifyDataSetChanged() // RecyclerView redraws list with new data when this is called
+            }
+            ```
+    
+           Recycler view's `DiffUtil` class provides a better solution. It uses **Eugene Myer's diff algorithm** to turn the old list into the new list with minimal number of changes. This algorithm is also used in git.
+
+            **Implementation**:
+            
+            1. Create callback class [`SleepNightDiffCallback`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) to check diff.
+            2. Make [`SleepNightAdapter` class](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) inherit `ListAdapter` class. This class provides automated way to read and update data. `SleepNightAdapter` class takes `SleepNightDiffCallback` as callback.
+            3. Use `ListAdapter`'s submit method to pass updated list from [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt)
+            
+                ```kotlin
+                sleepTrackerViewModel.nights.observe(this, Observer {nights ->
+                    nights?.let {
+                        adapter.submitList(nights) // ListAdapter provides function to update list
+                    }
+                })
+                ```
