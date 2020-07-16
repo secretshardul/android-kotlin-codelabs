@@ -723,3 +723,23 @@ Explanation given in comment format. Follow repos in order.
                 // Connect RecyclerView with adapter
                 binding.sleepList.adapter = adapter
                 ```
+
+        6. **Custom view holder**: Earlier `RecyclerView` displayed a simple text list using a `TextView` based view holder and layout. To customize what is displayed:
+        
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/d5deef86fa39fbfc.png)
+        
+            1. Create custom view layout [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml)
+            
+                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/8240174f46c2c380.png)
+            
+            2. Create custom `ViewHolder` in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) or in a separate file
+            
+                ```kotlin
+                class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+                    val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
+                    val quality: TextView = itemView.findViewById(R.id.quality_string)
+                    val qualityImage: ImageView = itemView.findViewById(R.id.quality_image)
+                }
+                ```
+
+            3. Use the `ViewHolder` and layout in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt)
