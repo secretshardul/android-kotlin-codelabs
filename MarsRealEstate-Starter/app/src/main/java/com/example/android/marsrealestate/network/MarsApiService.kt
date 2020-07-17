@@ -17,4 +17,28 @@
 
 package com.example.android.marsrealestate.network
 
+import retrofit2.Call
+import retrofit2.Retrofit
+import retrofit2.converter.scalars.ScalarsConverterFactory
+import retrofit2.http.GET
+
 private const val BASE_URL = " https://android-kotlin-fun-mars-server.appspot.com/"
+// Initialize retrofit with base URL
+private val retrofit = Retrofit.Builder()
+        .addConverterFactory(ScalarsConverterFactory.create())
+        .baseUrl(BASE_URL)
+        .build()
+
+/** API interface to access endpoints using HTTP method annotations(GET, POST, DELETE etc). **/
+interface MarsApiService {
+    @GET("realestate") // GET request to '/realestate' endpoint
+    fun getProperties():
+            Call<String> // Call object is used to start the request
+}
+
+/** Create object to initialize retrofit. This object is used to make API calls. **/
+object MarsApi {
+    val retrofitService: MarsApiService by lazy {
+        retrofit.create(MarsApiService::class.java)
+    }
+}

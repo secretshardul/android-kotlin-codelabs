@@ -1002,3 +1002,30 @@ Explanation given in comment format. Follow repos in order.
 
     1. API calls with Retrofit
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-data
+
+        1. Implementation(look at [`MarsAPIService.kt`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/network/MarsApiService.kt):
+            1. Import retrofit in app level [`build.gradle`](MarsRealEstate-Starter/app/build.gradle)
+            2. Initialize retrofit with base URL.
+            3. Create interface `MarsApiService` to access endpoints using HTTP method annotations(GET, POST, DELETE etc)
+            4. Create object to initialize retrofit. This object is used to make API calls.
+            5. Consume API in [`OverviewViewModel`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewViewModel.kt) using a callback. This callback has 2 overrides for success and failure respectively.
+
+                ```kotlin
+                private fun getMarsRealEstateProperties() {
+                    MarsApi.retrofitService.getProperties().enqueue( // Trigger callback when response is received
+                            object : Callback<String> {
+                                override fun onFailure(call: Call<String>, t: Throwable) {
+                                    _response.value = "Failure: ${t.message}"
+                                }
+                                override fun onResponse(call: Call<String>, response: Response<String>) {
+                                    _response.value = response.body()
+                                }
+                            })
+                }
+                ```
+
+            6. Provide internet permission in [`AndroidManifest.xml`](MarsRealEstate-Starter/app/src/main/AndroidManifest.xml)
+            
+                ```xml
+                <uses-permission android:name="android.permission.INTERNET" />
+                ```
