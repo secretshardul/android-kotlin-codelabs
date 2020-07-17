@@ -67,8 +67,9 @@ class SleepTrackerFragment : Fragment() {
         binding.sleepList.layoutManager = manager
 
         // Initialize adapter
-        val adapter = SleepNightAdapter(SleepNightClickListener {
-            nightId -> Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
+        val adapter = SleepNightAdapter(SleepNightClickListener {nightId ->
+            Toast.makeText(context, "$nightId", Toast.LENGTH_LONG).show()
+            sleepTrackerViewModel.onSleepNightClicked(nightId)
         })
         // Pass LiveData into adapter
         sleepTrackerViewModel.nights.observe(this, Observer {nights ->
@@ -84,6 +85,13 @@ class SleepTrackerFragment : Fragment() {
             night?.let {
                 this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepQualityFragment(night.nightId))
                 sleepTrackerViewModel.doneNavigating()
+            }
+        })
+
+        sleepTrackerViewModel.navigateToSleepDetail.observe(this, Observer { nightId ->
+            nightId?.let {
+                this.findNavController().navigate(SleepTrackerFragmentDirections.actionSleepTrackerFragmentToSleepDetailFragment(nightId))
+                sleepTrackerViewModel.onSleepDetailNavigated()
             }
         })
 
