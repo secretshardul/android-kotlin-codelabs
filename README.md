@@ -997,3 +997,8 @@ Explanation given in comment format. Follow repos in order.
                     }
                 }
                 ```
+
+11. [MarsRealEstate-Starter](MarsRealEstate-Starter)
+
+    1. API calls with Retrofit
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-data
