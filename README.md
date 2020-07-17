@@ -1067,3 +1067,32 @@ Explanation given in comment format. Follow repos in order.
                             }
                         })
                 ```
+
+        2. Retrofit with coroutines: This makes code cleaner by replacing callbacks with sequential code.
+            1. Import retrofit coroutine library in app level [`build.gradle`](MarsRealEstate-Starter/app/build.gradle)
+            2. Add `CoroutineCallAdapterFactory()` when building retrofit.
+            3. In `MarsApiService` rename `getProperties()` as `getPropertiesAsync()`. Change return type from `Call` to `Deferred`.
+
+                ```kotlin
+                @GET("realestate") // GET request to '/realestate' endpoint
+                fun getPropertiesAsync():
+                        Deferred<List<MarsProperty>> // Replace Call with Deferred for coroutine support
+                ```
+
+            4. In [`OverviewViewModel`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewViewModel.kt) use coroutine to make API call. Replace callback with sequential code and try/catch for error handling.
+
+                ```kotlin
+                private fun getMarsRealEstateProperties() {
+                    coroutineScope.launch {
+                        // Start network call
+                        val getPropertiesDeferred = MarsApi.retrofitService.getPropertiesAsync() // Retrofit works on background thread
+                        try {
+                            // await() returns result of network call. It is non-blocking
+                            val listResult = getPropertiesDeferred.await()
+                            _response.value = "${listResult.size} Mars properties received"
+                        } catch (e: Exception) {
+                            _response.value = "Failure: ${e.message}"
+                        }
+                    }
+                }
+                ```

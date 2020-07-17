@@ -21,10 +21,11 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.android.marsrealestate.network.MarsApi
-import com.example.android.marsrealestate.network.MarsProperty
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
+import java.lang.Exception
 
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
@@ -38,6 +39,8 @@ class OverviewViewModel : ViewModel() {
     val response: LiveData<String>
         get() = _response
 
+    private var viewModelJob = Job()
+    private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.Main)
     /**
      * Call getMarsRealEstateProperties() on init so we can display status immediately.
      */
@@ -49,14 +52,21 @@ class OverviewViewModel : ViewModel() {
      * Sets the value of the status LiveData to the Mars API status.
      */
     private fun getMarsRealEstateProperties() {
-        MarsApi.retrofitService.getProperties().enqueue( // Trigger callback when response is received
-                object : Callback<List<MarsProperty>> {
-                    override fun onFailure(call: Call<List<MarsProperty>>, t: Throwable) {
-                        _response.value = "Failure: ${t.message}"
-                    }
-                    override fun onResponse(call: Call<List<MarsProperty>>, response: Response<List<MarsProperty>>) {
-                        _response.value = "${response.body()?.size} Mars properties received"
-                    }
-                })
+        coroutineScope.launch {
+            // Start network call
+            val getPropertiesDeferred = MarsApi.retrofitService.getPropertiesAsync() // Retrofit works on background thread
+            try {
+                // await() returns result of network call. It is non-blocking
+                val listResult = getPropertiesDeferred.await()
+                _response.value = "${listResult.size} Mars properties received"
+            } catch (e: Exception) {
+                _response.value = "Failure: ${e.message}"
+            }
+        }
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        viewModelJob.cancel() // Stop coroutine
     }
 }
