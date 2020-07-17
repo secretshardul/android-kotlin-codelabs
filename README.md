@@ -814,3 +814,45 @@ Explanation given in comment format. Follow repos in order.
                 val manager = GridLayoutManager(activity, 3) // 3 span wide grid layout
                 ```              
             3. Update view holder layout in [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml).
+
+        11. **Handle clicks in recycler view**
+            1. Use data binding to pass click handler to view layout [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml):
+                - Add variable
+                    ```xml
+                    <variable
+                        name="clickListener"
+                        type="com.example.android.trackmysleepquality.sleeptracker.SleepNightClickListener" />
+                    ```
+                
+                - Consume listener
+                    ```xml
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:onClick="@{() -> clickListener.onClick(sleepNight)}">
+                    ```
+            
+            2. Create a click handler class `SleepNightClickListener` which accepts a lambda function as parameter. This function is executed by calling the class's `onClick()` method.
+                ```kotlin
+                class SleepNightClickListener(val clickListener: (nightId: Long) -> Unit) {
+                    fun onClick(night: SleepNight) = clickListener(night.nightId)
+                }
+                ```
+            3. Adapter's constructor takes an instance of `SleepNightClickListener` as input. This instance is passed to `onBindViewHolder()` function.
+                ```kotlin
+                class SleepNightAdapter(private val clickListener: SleepNightClickListener): ListAdapter<SleepNight, ViewHolder>(SleepNightDiffCallback()) {
+                    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+                        val item = getItem(position) // getItem() provided by ListAdapter
+                        holder.bind(item, clickListener)
+                    }
+                }
+                ```
+            4. Update view holders' `bind()` method to take `clickListener` as a parameter and bind it to the view:
+                ```kotlin
+                fun bind(item: SleepNight, clickListener: SleepNightClickListener) {
+                    binding.clickListener = clickListener
+                ```
+            5. Pass lambda function when instantiating adapter in [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt)
+                ```kotlin
+                val adapter = SleepNightAdapter(SleepNightClickListener {
+                    nightId -> Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
+                })
+                ```

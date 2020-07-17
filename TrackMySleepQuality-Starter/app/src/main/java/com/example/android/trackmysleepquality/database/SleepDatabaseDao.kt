@@ -39,6 +39,11 @@ interface SleepDatabaseDao {
     @Query("SELECT * from daily_sleep_quality_table where nightId = :key")
     fun get(key: Long): SleepNight?
 
+    /** Get night in LiveData format based on provided nightId
+     */
+    @Query("SELECT * from daily_sleep_quality_table where nightId = :key")
+    fun getNightWithId(key: Long): LiveData<SleepNight>
+
     /** Empty table without deleting it
      * Query is used because @Delete annotation only allows single item deletion.
      */
@@ -59,4 +64,5 @@ interface SleepDatabaseDao {
      */
     @Query("SELECT * from daily_sleep_quality_table ORDER BY nightId DESC LIMIT 1")
     fun getTonight(): SleepNight?
+
 }

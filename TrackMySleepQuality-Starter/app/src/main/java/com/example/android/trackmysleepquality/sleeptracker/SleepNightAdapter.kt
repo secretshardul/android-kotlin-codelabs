@@ -28,11 +28,10 @@ class ViewHolder private constructor(private val binding: ListItemSleepNightBind
      * Called by Adapter to bind data to inflated view at given position
      * @param item Position where data will be bound
      */
-    fun bind(item: SleepNight) {
-        val res = itemView.context.resources
+    fun bind(item: SleepNight, clickListener: SleepNightClickListener) {
         binding.sleepNight = item
+        binding.clickListener = clickListener
         binding.executePendingBindings() // Optimization for RecyclerView
-
     }
 }
 
@@ -42,7 +41,7 @@ class ViewHolder private constructor(private val binding: ListItemSleepNightBind
  * Helper class for reading, tracking and updating data. It takes `SleepNightDiffCallback()` as
  * callback function for diff checking.
  */
-class SleepNightAdapter: ListAdapter<SleepNight, ViewHolder>(SleepNightDiffCallback()) {
+class SleepNightAdapter(private val clickListener: SleepNightClickListener): ListAdapter<SleepNight, ViewHolder>(SleepNightDiffCallback()) {
     // No need of data variable. Item can be fetched using getItem()
     // ListAdapter keeps track of data and provides submitList() to update list
 
@@ -56,7 +55,7 @@ class SleepNightAdapter: ListAdapter<SleepNight, ViewHolder>(SleepNightDiffCallb
     /** Return data for item at the specified position **/
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = getItem(position) // getItem() provided by ListAdapter
-        holder.bind(item)
+        holder.bind(item, clickListener)
     }
 }
 
@@ -73,4 +72,9 @@ class SleepNightDiffCallback: DiffUtil.ItemCallback<SleepNight>() {
         return oldItem == newItem
     }
 
+}
+
+// Constructor takes clickListener() function as input
+class SleepNightClickListener(val clickListener: (nightId: Long) -> Unit) {
+    fun onClick(night: SleepNight) = clickListener(night.nightId)
 }
