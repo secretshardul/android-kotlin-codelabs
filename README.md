@@ -1029,3 +1029,41 @@ Explanation given in comment format. Follow repos in order.
                 ```xml
                 <uses-permission android:name="android.permission.INTERNET" />
                 ```
+
+        2. Parse JSON with `moshi`
+            1. Import moshi in app level [`build.gradle`](MarsRealEstate-Starter/app/build.gradle)
+            2. Inspect JSON data and create data class [`MarsProperty`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/network/MarsProperty.kt)
+            3. Initialize moshi and integrate with Retrofit using `MoshiConvertorFactory` in [`MarsApiService`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/network/MarsApiService.kt)
+
+                ```kotlin
+                private val moshi = Moshi.Builder()
+                        .add(KotlinJsonAdapterFactory())
+                        .build()
+                
+                private val retrofit = Retrofit.Builder()
+                        .addConverterFactory(MoshiConverterFactory.create(moshi))
+                        .baseUrl(BASE_URL)
+                        .build()
+                ```
+
+            4. In `MarsApiService` refactor `getProperties()` to return list of `MarsProperty`
+
+                ```kotlin
+                @GET("realestate") // GET request to '/realestate' endpoint
+                fun getProperties():
+                        Call<List<MarsProperty>> // Return parsed list
+                ```
+
+            5. Refactor API call callback in [`OverviewViewModel`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewViewModel.kt) to process `List<MarsProperty>` data.
+
+                ```kotlin
+                MarsApi.retrofitService.getProperties().enqueue( // Trigger callback when response is received
+                        object : Callback<List<MarsProperty>> {
+                            override fun onFailure(call: Call<List<MarsProperty>>, t: Throwable) {
+                                _response.value = "Failure: ${t.message}"
+                            }
+                            override fun onResponse(call: Call<List<MarsProperty>>, response: Response<List<MarsProperty>>) {
+                                _response.value = "${response.body()?.size} Mars properties received"
+                            }
+                        })
+                ```
