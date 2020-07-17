@@ -74,7 +74,7 @@ class SleepTrackerFragment : Fragment() {
         // Pass LiveData into adapter
         sleepTrackerViewModel.nights.observe(this, Observer {nights ->
             nights?.let {
-                adapter.submitList(nights) // ListAdapter provides function to update list
+                adapter.addHeaderAndSubmitList(it)
             }
         })
         // Connect RecyclerView with adapter

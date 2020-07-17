@@ -86,9 +86,9 @@ Explanation given in comment format. Follow repos in order.
     Data binding uses:
         1. Eliminate `findViewById()`
         2. Data binding to display data: Data is used to directly make a **data class** available to a view. Here `MyName` data class is used to provide name and nickname to `activity_main.xml`. Special `<data>`, `<variable>` and `@{}` syntax is used to pass a data class to the layout.
-        
+
         **Binding adapters**: Look at recycler view section.
-    
+
 5. [ColorMyViews](/ColorMyViews): `ContraintLayout`
 
     > https://codelabs.developers.google.com/codelabs/kotlin-android-training-constraint-layout
@@ -110,28 +110,28 @@ Explanation given in comment format. Follow repos in order.
    2. **Chains**: A chain is a group of views linked together by bidirectional constraints. Chains can be horizontal or vertical. The leftmost view in horizontal chain and topmost view in vertical chain is called the **head**.
 
        ![](images/2020-07-07-17-13-05.png)
-    
+
        Chains have 3 styles which can be set using `layout_constraintHorizontal_chainStyle` or `layout_constraintVertical_chainStyle` parameter in the head view.
-    
+
        1. **Spread**(default): Views are evenly spread in the available space, after margins are accounted for.
           ![](images/2020-07-07-17-16-29.png)
-    
+
        2. **Spread inside**: First and the last views are attached to the parent on each end of the chain. The rest are evenly spread.
           ![](images/2020-07-07-17-16-49.png)
-    
+
        3. **Packed**: Views are packed together, after margins are accounted for.
           ![](images/2020-07-07-17-17-03.png)
 
    3. **Design time attributes**: They're only displayed during layout design and are ignored at runtime. They're helpful for designing. They begin with `tools` namespace.
-   
+
    4. **Baseline constraints**: Aligns baseline of one view's text with baseline of another view's text. This means text is always aligned, even when font sizes are different. This is done using `app:layout_constraintBaseline_toBaselineOf` attribute. To do this from design menu, right click the view and click on **show baseline**.
-   
+
 6. (AndroidTrivia-Starter)[/AndroidTrivia-Starter]: Fragments
     1. **Fragment**: A fragment is a sub-activity which can be reused in other activities. It has its own lifecycle events, layout file and kotlin class. Fragments can be added or removed when an activity is removed. Fragments are comparable to react components.
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-create-and-add-fragmen
-    
+
         To inflate fragment, add binding to fragment's `onCreateView()`:
-        
+
         ```kotlin
         override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                                   savedInstanceState: Bundle?): View? {
@@ -144,7 +144,7 @@ Explanation given in comment format. Follow repos in order.
         1. Import navigation library from Gradle(see committed code).
         2. Right click res > new > Android resource file > navigation. Navigation folder is generated which contains navigation xml file. It provides a GUI to setup navigation between different fragments.
         3. **Navigation host fragment**: It acts as host to navigate between fragments, swapping them in and out as necessary. Add `NavHostFragment` to `activity_main.xml`. `app:defaultNavHost` true sets it as default host, allowing it to intercept back button.
-            
+
             ```xml
            <fragment
               android:id="@+id/myNavHostFragment"
@@ -170,21 +170,21 @@ Explanation given in comment format. Follow repos in order.
                        app:popUpToInclusive="true" />
                 </fragment>
                 ```
-            
+
              `popUpTo` can be used to edit back button behavior
                 1. Take user to title fragment and not game fragment when back button is pressed from game won / game over fragment.
                 2. When user selects play again but then presses back button, he should be taken to title screen and not game over fragment.
-        
+
         5. **Up button navigation**:
             - Up button is the `<-` button present in top app bar/action bar. Navigation wise it's similar to bottom back button but never takes the user out of the app.
             - It's implemented using `NavigationUI` library. Call `NavigationUI.setupActionBarWithNavController` and pass `navController` as a parameter. `navController` object is obtained from navigation host fragment. Finally listen to the up button and navigate behind by overriding `onSupportNavigationUp()` lifecycle function.
-            
+
                 ```kotlin
               override fun onSupportNavigateUp(): Boolean {
                       return navController.navigateUp()
-                  }  
+                  }
               ```
-              
+
         6. **Options menu**: It is the 3 dot menu on right side of the app bar. It opens a drop down menu. It's generally used to navigate to help or about screen.
             1. Add `aboutFragment` to navigator.
             2. Right click res > new resource > menu. Name it `options_menu`.
@@ -204,7 +204,7 @@ Explanation given in comment format. Follow repos in order.
 
     3. **Pass data between fragments**
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-start-external-activity
-        
+
         1. Add safe args plugin to Gradle. This adds type safety when passing data between fragments or activities. It is a better alternative to passing bundles. This generates `GameFragmentDirections` class.
         2. For navigation, action ID can be replaced with a directions class method.
             ```kotlin
@@ -248,18 +248,18 @@ Explanation given in comment format. Follow repos in order.
     1. Lifecycles and logging
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-complex-lifecycle
-    
+
         1. **Android Lifecycles** Activities and fragments have lifecycles where they undergo state changes. Callbacks are invoked when they transition. Callback operations can be overridden to allow programmability.
             1. **Activity lifecycle**
-    
+
                 ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/f6b25a71cec4e401.png)
-    
+
             2. **Fragment lifecycle**
-    
+
                 ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
-            
+
             3. **`super.onCreate()` and other `super` functions**: `super` is used to execute code from the overridden method in addition to our own code. This step is necessary.
-        
+
         2. **Timber logger**: Improvement over Android's basic logger. Setup steps
             1. Import in app level `build.gradle`
                 ```kotlin
@@ -272,7 +272,7 @@ Explanation given in comment format. Follow repos in order.
                         android:name=".ClickerApplication"
                 ```
             4. Replace `Log.i` with `Timber.i` in [`MainActivity`](DessertClicker-Starter/app/src/main/java/com/example/android/dessertclicker/MainActivity.kt)
-        
+
         3. **Lifecycle use cases**:
             1. Activity is opened:
                 ```
@@ -287,23 +287,23 @@ Explanation given in comment format. Follow repos in order.
                 onPause() -> onStop() -> onRestart() -> onStart() -> onResume()
                 ```
              3. **Started vs Resumed states**: App is visible in *started state*. Whereas in *resumed state* the app is in focus and user can interact with it. Activity is said to be in **interactive lifecycle** when it is in *resumed state*. Eg. When share button is clicked the activity remains visible but loses focus.
-             
+
                 ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/9ddc8b1dc79b1bff.png)
                 ```
                 onPause() -> onResume()
                 ```
-                
+
         4. **Fragment lifecycle**: Refer next app
-        
+
         5. **Avoid memory leaks**: Resources created in a lifecycle callback should be pulled down in the opposing callback. Eg. If a resource is started in `onStart()`, destroy it in `onStop()`.
-        
+
         6. **Lifecycle library**: It lets us shift control from the activity or fragment to the actual component that needs to be lifecycle aware. Instead of calling start and stop timer functions from lifecycle callbacks, we have these functions observe and react to lifecycle changes.
             1. **Lifecycle owner**: Components which have their own lifecycle, i.e. activities and fragments. They implement the `LifecycleOwner` interface.
             2. **Lifecycle class**: Contains lifecycle state. It is passed by the lifecycle owner to the component implementing lifecycle library.
             3. **Lifecycle observer**: Components which observe and react to lifecycle state change. They implement `LifecycleObserver` interface. Here `DesserTimer` is the lifecycle observer.
-        
+
          The lifecycle observer functions are triggered using annotations:
-         
+
         ```kotlin
         @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
         fun stopTimer() {
@@ -312,21 +312,21 @@ Explanation given in comment format. Follow repos in order.
             handler.removeCallbacks(runnable)
         }
         ```
-   
+
         7. **App shutdown and `onSaveInstanceState()`**: Android can shut down background app processes to conserve resources. But to the user it doesn't look like the app has been closed. When user navigates back to the app, android restarts the app. However any data displayed by the app to user is lost. Eg. here deserts sold becomes 0. Also the app's `onDestroy()` method is never called on termination, making it unsuitable for backups.
-        
+
             To simulate app termination, put app to background and run shell script:
-            
+
             ```sh
             adb shell am kill com.example.android.dessertclicker
             ```
-           
+
            The **Bundle object** `savedInstanceState` is used to protect data from termination. **Bundle** is stored in RAM and is useful for minimized apps only. Its not a persistent database. `onSaveInstanceState()` and `onCreate()` callbacks are used to save and read bundle respectively. The `onSaveInstanceState()` callback is called after `onStop()` and receives bundle object as a parameter.
-    
+
             ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-complex-lifecycle/img/c259ab6beca0ca88.png)
-    
+
             By default android stores some views in the bundle. Custom variables need to be added by user.
-            
+
             1. To save data
             ```kotlin
             /**
@@ -337,16 +337,16 @@ Explanation given in comment format. Follow repos in order.
                 outState?.putInt(KEY_DESSERT_SOLD, dessertsSold)
                 outState?.putInt(KEY_TIMER_SECONDS, dessertTimer.secondsCount)
                 super.onSaveInstanceState(outState)
-        
+
                 Timber.i("onSaveInstanceState Called")
             }
             ```
-           
+
            2. To retrieve data in `onCreate()`
            ```kotlin
            override fun onCreate(savedInstanceState: Bundle?) {
                super.onCreate(savedInstanceState)
-       
+
                // Retrieve saved data from bundle
                if(savedInstanceState != null) {
                    revenue = savedInstanceState.getInt(KEY_REVENUE, 0)
@@ -355,14 +355,14 @@ Explanation given in comment format. Follow repos in order.
                    showCurrentDessert() // Update image based on dessertsSold count
                }
            ```
-        
+
         App configuration changes like **screen rotation**, language change etc change the device state radically. Android then shuts down and restarts the app. To preserve data, `onSaveInstanceState()` can be used.
 
-        
+
 8. [AndroidTrivia-Fragment-Lifecycle](AndroidTrivia-Fragment-Lifecycle)
 
     ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-lifecycles-logging/img/dfde69e6a42d54b3.png)
-    
+
     Fragment lifecycle is similar to activity lifecycle with some additional functions. Description tells when these functions are called.
     1. `onAttach()`: Fragment attached to activity.
     2. `onCreate()`: Fragment created.
@@ -375,7 +375,7 @@ Explanation given in comment format. Follow repos in order.
     9. `onDestroyView()`: View destroyed.
     10. `onDestroy()`: Fragment destroyed.
     11. `onDetach()`: Fragment detached from activity.
-    
+
     When user moves to a new fragment, the current fragment is not destroyed. Only the view is destroyed. This can be seen when user navigates back to this fragment
     ```
     onPause() -> onStop() -> onDestroyView() -> onCreateView() -> onActivityCreated() -> onStart() -> onResume()
@@ -384,11 +384,11 @@ Explanation given in comment format. Follow repos in order.
 9. [GuessTheWord-Starter](GuessTheWord-Starter)
     1. **Android app architecture, ViewModel and ViewModelFactory**
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model
-        
+
         1. **Android App clean architecture**: It is based on separation of concerns:
-        
+
             ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/d115344705100cf1.png)
-        
+
             1. **UI controller**: Includes activity and fragment. It should only perform UI handling- displaying views, accepting inputs etc. It shouldn't have decision making logic.
 
             2. **ViewModel**:
@@ -412,13 +412,13 @@ Explanation given in comment format. Follow repos in order.
                 07-11 18:51:41.669 16315-16315/com.example.android.guesstheword I/GameViewModel: GameViewModel created!
                 07-11 18:52:21.421 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
                 07-11 18:52:27.228 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
-                07-11 19:12:30.803 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of 
+                07-11 19:12:30.803 16315-16315/com.example.android.guesstheword I/GameFragment: Called ViewModelProviders.of
                 ```
-               
+
                ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-view-model/img/4b1c6b4b4c62a8ef.png)
 
         3. Move data and data processing to ViewModel: Now displayed data persists after screen rotation. ViewModel is a better alternative to Bundle for persisting data across lifecycle changes. Bundles have size limitations as well.
-        
+
         4. **ViewModelFactory**: A factory method is a method which returns an object. Factory method pattern lets us instantiate `ViewModel` objects with parameters. This is not possible with just `ViewModelProvider`. Here we instantiate `ScoreViewModel` by passing score parameter to `ScoreViewModelFactory`.
 
             ```kotlin
@@ -427,28 +427,28 @@ Explanation given in comment format. Follow repos in order.
             binding.scoreText.text = viewModel.score.toString()
             ```
     2. **LiveData**
-    
+
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-live-data
 
         1. Theory
-        
+
             ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-live-data/img/b608df5e5e5fa4f8.png)
-        
+
             - LiveData is an observable data class used to change UI automatically when data changes.
             - It is a wrapper class that can hold data of any type.
             - Observers are used to react to `LiveData` observables.
             - It's lifecycle-aware. It only updates observers when app is in `STARTED` or `RESUMED` state.
-        
+
         2. Add `LiveData` and observers
             - Update [`GameViewModel`](GuessTheWord-Starter/app/src/main/java/com/example/android/guesstheword/screens/game/GameViewModel.kt) with `MutableLiveData` observables. Update references to `word` and `score` with `word.value` and `score.value`.
-            
+
                 ```kotlin
                 val word = MutableLiveData<String>() // Mutable because value can change
                 val score = MutableLiveData<Int>()
                 ```
-            
+
             - Add observers to `GameFragment`
-            
+
                 ```kotlin
                 /** viewLifecycleOwner
                  * Pass reference to the fragment view and not fragment itself. The both have different
@@ -465,11 +465,11 @@ Explanation given in comment format. Follow repos in order.
                     newScore -> binding.scoreText.text = newScore.toString()
                 })
                 ```
-            
+
             - Remove `updateWordText()` and `updateScoreText()` functions. They're not needed because UI will now be automatically updated.
-               
+
         3. **LiveData encapsulation**: Encapsulate `LiveData` to provide read-only access to outside classes.
-            
+
             ```kotlin
             /** Encapsulation
              * Only this class has write access to _word and _score. These MutableLiveData fields are private.
@@ -480,25 +480,25 @@ Explanation given in comment format. Follow repos in order.
             // Pass value using Kotlin getter
             val word: LiveData<String> // Not mutable
                 get() = _word
-            
+
             private val _score = MutableLiveData<Int>()
             val score: LiveData<Int>
                 get() = _score
             ```
-       
+
         4. Add observable and observer for for game end event. Game ends when words are exhausted.
         5. `LiveData` to show score and restart game
-    
+
     2. **Data binding with `LiveData` and `ViewModel`**: We connect ViewModel directly to view via data binding instead of using fragments as an intermediary.
         1. **Listener binding**: Directly bind listener methods in `ViewModel` to XML view buttons. This removes need of setting listeners in Fragments.
             1. Pass `viewModel` as a data class to XML view
                 - In `game_fragment.xml`
-                
+
                     ```xml
                     <layout xmlns:android="http://schemas.android.com/apk/res/android"
                         xmlns:app="http://schemas.android.com/apk/res-auto"
                         xmlns:tools="http://schemas.android.com/tools">
-                    
+
                         <data>
                             <variable
                                 name="gameViewModel"
@@ -509,39 +509,39 @@ Explanation given in comment format. Follow repos in order.
                     ```kotlin
                     binding.gameViewModel = viewModel
                     ```
-            
+
             2. Listener binding: Bind button click listener to `viewModel` methods.
-            
+
                 ```xml
                 <Button
                     android:id="@+id/skip_button"
                     android:onClick="@{() -> gameViewModel.onSkip()}" />
                 ```
-            
+
             3. Remove click handlers from fragment.
-            
+
                 ```kotlin
                 binding.skipButton.setOnClickListener { onSkip() }
                 ```
 
         2. **LiveData and data binding**: Data binding can allow LiveData present in `ViewModel` to automatically update binding without need of observers.
-        
+
                 1. Assign fragment view as binding's lifecycle owner
-                
+
                     ```kotlin
                     binding.lifecycleOwner = viewLifecycleOwner
                     ```
-                
+
                 2. Access LiveData variables in view
-                
+
                     ```
                     <TextView
                         android:id="@+id/score_text"
                         android:text="@{scoreViewModel.score.toString()}" />
                     ```
-                
+
                 3. Remove observer
-                
+
                     ```kotlin
                     viewModel.score.observe(viewLifecycleOwner, Observer {
                         newScore -> binding.scoreText.text = newScore.toString()
@@ -560,11 +560,11 @@ Explanation given in comment format. Follow repos in order.
                 ```
 
     2. **LiveData transformations**: Transformations allow us to perform manipulations on one `LiveData` object and return a new `LiveData` object. It is comparable to `map()` operation in JavaScript.
-    
+
         **Properties**
             - Transformations run in the UI thread so shouldn't be used for computationally intensive tasks.
             - Transformations are not calculated unless an observer function is observing the transformed `LiveData`.
-    
+
         1. In [`GameViewModel.kt`](GuessTheWord-Starter/app/src/main/java/com/example/android/guesstheword/screens/game/GameViewModel.kt)
         ```kotlin
         /** Display remaining game time to user. Game ends when time becomes 0 **/
@@ -575,7 +575,7 @@ Explanation given in comment format. Follow repos in order.
                 DateUtils.formatElapsedTime(it)
             }
         ```
-       
+
        2. Use the transformed string `LiveData` in [`game_fragment.xml`](GuessTheWord-Starter/app/src/main/res/layout/game_fragment.xml)
        ```xml
        <TextView
@@ -586,13 +586,13 @@ Explanation given in comment format. Follow repos in order.
 10. [TrackMySleepQuality-Starter](TrackMySleepQuality-Starter)
     1. **Room database**:
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-room-database
-        
+
         1. **Theory**
             - Room is an abstraction library over SQLite.
             - It helps us handle:
                 1. **Entity**: Represents an object and its properties stored in the database. Each entity is a row and every property is a column. An **entity class** defines a table. Each entity is defined as an **annotated data class**.
                 2. **Query**: Used for CRUD operations. Database interactions are defined using a **data access object(DAO)**. DAO provides convenience methods for CRUD operations. It's is created using an **annotated interface**.
-        
+
         2. **Create entity using data class**: Room provides annotations to create entities. Look at [`SleepNight.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepNight.kt)
             1. `@Entity`: Holds table name
             2. `@PrimaryKey`: Define a field as primary key
@@ -602,7 +602,7 @@ Explanation given in comment format. Follow repos in order.
             1. `@Dao`: All DAOs need to be annotated with this.
             2. `@Insert`, `@Update`, `@Delete`: Convenience annotations. `@Update` and `@Delete` work for single items and need primary key.
             3. `@Query`: Run ad-hoc queries
-            
+
         4. **Database creation**: `@Database` generates database, entities and DAOs. Look at [`SleepDatabase.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/database/SleepDatabase.kt)
 
     2. **Coroutines**:
@@ -618,30 +618,30 @@ Explanation given in comment format. Follow repos in order.
                 1. **Job**: They're tasks that can be cancelled. Jobs can be arranged in a parent-child hierarchy. Cancelling the parent job cancels all its children.
                 2. **Dispatcher**: It sends off coroutines to run on different threads. Eg. `Dispatcher.Main` runs on main thread.
                 3. **Scope**: Contains information about job and dispatcher. It keeps track of coroutines and defines the context in which they run.
-                
+
         2. **Implementation**: Use [`SleepTrackerViewModel`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerViewModel.kt) to access database and update UI using coroutines. A general pattern is seen here:
             1. Launch coroutine in main/UI thread. This is because `SleepTrackerViewModel` has to update UI.
             2. Call suspend function for long running tasks so UI thread is not blocked.
             3. Run the suspend function code in separate thread using IO dispatcher. This is because suspend function only accesses database, it has nothing to do with UI.
-            
+
             ```kotlin
             fun someWorkNeedsToBeDone() {
                uiScope.launch {
-            
+
                     suspendFunction()
-            
+
                }
             }
-            
+
             suspend fun suspendFunction() {
                withContext(Dispatchers.IO) {
                    longrunningWork()
                }
             }
             ```
-           
+
            Alternatively `suspend` function's code can be directly added to the coroutine
-           
+
            ```kotlin
             fun someWorkNeedsToBeDone() {
                uiScope.launch {
@@ -654,14 +654,14 @@ Explanation given in comment format. Follow repos in order.
 
     3. **Recycler view**
         > https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals
-    
+
         1. **Theory**: Recycler view is an efficient way to display large lists in Android
             1. Only processes items currently displayed on screen.
             2. When an item scrolls off the screen, its view is recycled by another screen.
             3. Recycler view uses adapter pattern
-            
+
                 ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/dcf4599789b9c2a1.png)
-                
+
         2. **Adapter pattern**: It helps an object work with another API. `RecyclerView` uses adapter pattern to transform app data into something it can display, without changing how the data is stored or processed.
 
         3. `RecyclerView` needs the following:
@@ -677,17 +677,17 @@ Explanation given in comment format. Follow repos in order.
 
         4. Implementation
             1. Add `RecyclerView` to [`fragment_sleep_tracker.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/fragment_sleep_tracker.xml). Set `LayoutManager` to `LinearLayoutManager`:
-                
+
                 ```
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 ```
 
             2. Create [`text_item_view.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/text_item_view.xml) which holds the layout of items to be displayed.
-            
+
             3. Create text view holder `TextItemViewHolder` in [`Util.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/Util.kt)
-            
+
             4. Create adapter [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) based on `TextItemViewHolder`. Create `data` variable which holds data to be displayed and a setter to update it.
-            
+
                 ```kotlin
                 var data = listOf<SleepNight>()
                 set(value) { // Setter to replace data
@@ -695,12 +695,12 @@ Explanation given in comment format. Follow repos in order.
                     notifyDataSetChanged() // RecyclerView redraws list with new data when this is called
                 }
                 ```
-                
+
                 Override 3 methods needed by `RecyclerView`:
                     1. `getItemCount()`
                     2. `onCreateViewHolder()`: Returns inflated view holder.
                     3. `onBindViewHolder()`: Returns data for item at specified position. It can perform conditional operations on individual items:
-                    
+
                         ```kotlin
                         override fun onBindViewHolder(holder: TextItemViewHolder, position: Int) {
                             val item = data[position]
@@ -712,7 +712,7 @@ Explanation given in comment format. Follow repos in order.
                         ```
 
             5. In [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) pass data to adapter and connect it to `RecyclerView`.
-            
+
                 ```kotlin
                 // Initialize adapter
                 val adapter = SleepNightAdapter()
@@ -727,15 +727,15 @@ Explanation given in comment format. Follow repos in order.
                 ```
 
         6. **Custom view holder**: Earlier `RecyclerView` displayed a simple text list using a `TextView` based view holder and layout. To customize what is displayed:
-        
+
             ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/d5deef86fa39fbfc.png)
-        
+
             1. Create custom view layout [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml)
-            
+
                 ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-recyclerview-fundamentals/img/8240174f46c2c380.png)
-            
+
             2. Create custom `ViewHolder` in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) or in a separate file
-            
+
                 ```kotlin
                 class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
                     val sleepLength: TextView = itemView.findViewById(R.id.sleep_length)
@@ -754,9 +754,9 @@ Explanation given in comment format. Follow repos in order.
 
         8. **`DiffUtil` and `RecyclerView`**
             > https://codelabs.developers.google.com/codelabs/kotlin-android-training-diffutil-databinding
-            
+
             Earlier `RecyclerView` data was updated using `notifyDataSetChanged()` in [`SleepNightAdapter`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt). But this is an inefficient method which invalidates entire list to have it redrawn.
-    
+
             ```kotlin
             var data = listOf<SleepNight>()
             set(value) { // Setter to replace data
@@ -764,15 +764,15 @@ Explanation given in comment format. Follow repos in order.
                 notifyDataSetChanged() // RecyclerView redraws list with new data when this is called
             }
             ```
-    
+
            Recycler view's `DiffUtil` class provides a better solution. It uses **Eugene Myer's diff algorithm** to turn the old list into the new list with minimal number of changes. This algorithm is also used in git.
 
             **Implementation**:
-            
+
             1. Create callback class [`SleepNightDiffCallback`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) to check diff.
             2. Make [`SleepNightAdapter` class](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt) inherit `ListAdapter` class. This class provides automated way to read and update data. `SleepNightAdapter` class takes `SleepNightDiffCallback` as callback.
             3. Use `ListAdapter`'s submit method to pass updated list from [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt)
-            
+
                 ```kotlin
                 sleepTrackerViewModel.nights.observe(this, Observer {nights ->
                     nights?.let {
@@ -809,10 +809,10 @@ Explanation given in comment format. Follow repos in order.
 
             **To set up Grid layout**
             1. Remove `LinearLayoutManager` from [`fragment_sleep_tracker.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/fragment_sleep_tracker.xml).
-            2. Setup `GridLayoutManager` in [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt).            
+            2. Setup `GridLayoutManager` in [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt).
                 ```kotlin
                 val manager = GridLayoutManager(activity, 3) // 3 span wide grid layout
-                ```              
+                ```
             3. Update view holder layout in [`list_item_sleep_night.xml`](TrackMySleepQuality-Starter/app/src/main/res/layout/list_item_sleep_night.xml).
 
         11. **Handle clicks in recycler view**
@@ -823,13 +823,13 @@ Explanation given in comment format. Follow repos in order.
                         name="clickListener"
                         type="com.example.android.trackmysleepquality.sleeptracker.SleepNightClickListener" />
                     ```
-                
+
                 - Consume listener
                     ```xml
                     <androidx.constraintlayout.widget.ConstraintLayout
                         android:onClick="@{() -> clickListener.onClick(sleepNight)}">
                     ```
-            
+
             2. Create a click handler class `SleepNightClickListener` which accepts a lambda function as parameter. This function is executed by calling the class's `onClick()` method.
                 ```kotlin
                 class SleepNightClickListener(val clickListener: (nightId: Long) -> Unit) {
@@ -855,4 +855,130 @@ Explanation given in comment format. Follow repos in order.
                 val adapter = SleepNightAdapter(SleepNightClickListener {
                     nightId -> Toast.makeText(context, "$nightId", Toast.LENGTH_SHORT).show()
                 })
+                ```
+
+        12. **Headers in Recycler view**: Headers can be implemented in 2 ways:
+            1. Make adapter detect any specific index for header(like 0). Display header here. This is the preferred approach.
+            2. Modify data list to add header data at required positions: Not good practice.
+
+            **Implementation**(see [`SleepNightAdapter.kt`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepNightAdapter.kt)):
+
+            1. Separate data classes and view holders are used to represent:
+                1. **Header**: `Header` data class and `TextViewHolder` view holder is used.
+
+                    ```kotlin
+                    class HeaderViewHolder(view: View): RecyclerView.ViewHolder(view) {
+                        companion object {
+                            fun from(parent: ViewGroup): HeaderViewHolder {
+                                val layoutInflater = LayoutInflater.from(parent.context)
+                                val view = layoutInflater.inflate(R.layout.header, parent, false)
+                                return HeaderViewHolder(view)
+                            }
+                        }
+                    }
+                    ```
+
+                2. **Sleep nights**: `SleepNightItem` data class and `ViewHolder` view holder is used.
+
+                    ```kotlin
+                    class SleepNightViewHolder private constructor(private val binding: ListItemSleepNightBinding): RecyclerView.ViewHolder(binding.root) {
+                        companion object {
+                            fun from(parent: ViewGroup): SleepNightViewHolder {
+                                val layoutInflater = LayoutInflater.from(parent.context) // Used to inflate XML layouts
+                                val binding = ListItemSleepNightBinding.inflate(layoutInflater, parent, false)
+                                return SleepNightViewHolder(binding)
+                            }
+                        }
+
+                        fun bind(item: SleepNight, clickListener: SleepNightClickListener) {
+                            binding.sleepNight = item
+                            binding.clickListener = clickListener
+                            binding.executePendingBindings() // Optimization for RecyclerView
+                        }
+                    }
+                    ```
+
+            2. `Header` and `SleepNightItem` are children of the `DataItem` class.
+
+                ```kotlin
+                /** Sealed class: All subclasses must be declared within its body. This prevents bugs. **/
+                sealed class DataItem {
+                    abstract val id: Long
+
+                    data class SleepNightItem(val sleepNight: SleepNight): DataItem() {
+                        override val id = sleepNight.nightId
+                    }
+
+                    // Header as object because only one instance is needed.
+                    object Header: DataItem() {
+                        override val id = Long.MIN_VALUE // So header ID never conflicts with sleep item ID
+                    }
+                }
+                ```
+
+            3. Use this common parent class `DataItem` to update the signature of the adapter and diff function.
+
+                ```kotlin
+                class SleepNightAdapter(private val clickListener: SleepNightClickListener): ListAdapter<DataItem, RecyclerView.ViewHolder>(SleepNightDiffCallback()) {}
+                ```
+
+                ```kotlin
+                class SleepNightDiffCallback: DiffUtil.ItemCallback<DataItem>() {
+                    /** Return true if items are same **/
+                    override fun areItemsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+                        return oldItem.id == newItem.id
+                    }
+
+                    /** Return true if contents of items are same **/
+                    override fun areContentsTheSame(oldItem: DataItem, newItem: DataItem): Boolean {
+                        return oldItem == newItem
+                    }
+
+                }
+                ```
+
+            4. Override `getItemViewType()` to allow adapter to differentiate between header and sleep sleep data. Here `ITEM_VIEW_TYPE_HEADER` and `ITEM_VIEW_TYPE_ITEM` can be any constants. This function assigns `itemType` to each data item.
+
+                ```kotlin
+                override fun getItemViewType(position: Int): Int {
+                    return when(getItem(position)) {
+                        is DataItem.Header -> ITEM_VIEW_TYPE_HEADER
+                        else -> ITEM_VIEW_TYPE_ITEM
+                    }
+                }
+                ```
+
+            8. In `onCreateViewHolder()` use `itemType` parameter inflate header and sleep data separately.
+
+                ```kotlin
+                override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+                    return when(viewType) {
+                        ITEM_VIEW_TYPE_HEADER -> HeaderViewHolder.from(parent)
+                        else -> SleepNightViewHolder.from(parent)
+                    }
+                }
+                ```
+
+            9. Finally insert header at 0th position in list using `addHeaderAndSubmitList()`. This function is called by [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt) instead of ListAdapter's `submitList()`.
+
+                ```kotlin
+                fun addHeaderAndSubmitList(list: List<SleepNight>?) {
+                    // Use coroutine for async operation
+                    adapterScope.launch {
+                        val items = when(list) {
+                            null -> listOf(DataItem.Header)
+                            else -> listOf(DataItem.Header) + list.map { DataItem.SleepNightItem(it) }
+                        }
+                        // Main thread used because UI has to be updated
+                        withContext(Dispatchers.Main) {
+                            submitList(items)
+                        }
+                    }
+                }
+                ```
+
+            10. In [`SleepTrackerFragment`](TrackMySleepQuality-Starter/app/src/main/java/com/example/android/trackmysleepquality/sleeptracker/SleepTrackerFragment.kt)
+
+                ```kotlin
+                adapter.addHeaderAndSubmitList(it)
                 ```
