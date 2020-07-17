@@ -982,3 +982,18 @@ Explanation given in comment format. Follow repos in order.
                 ```kotlin
                 adapter.addHeaderAndSubmitList(it)
                 ```
+
+        13. **Selectively set span in RecyclerView grid layout**: Use `GridLayoutManager`'s `SpanSizeLookUp()` and `getSpanSize()` to increase width of header at 0th index:
+
+                ```kotlin
+                val manager = GridLayoutManager(activity, 3) // 3 span wide grid layout
+                manager.spanSizeLookup = object: GridLayoutManager.SpanSizeLookup() {
+                    // Assign 3 span width to heading at 0th index
+                    override fun getSpanSize(position: Int): Int {
+                        return when(position) {
+                            0 -> 3
+                            else -> 1
+                        }
+                    }
+                }
+                ```
