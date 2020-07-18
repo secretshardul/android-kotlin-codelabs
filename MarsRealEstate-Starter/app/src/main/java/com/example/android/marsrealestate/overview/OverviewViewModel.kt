@@ -28,17 +28,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
+enum class MarsApiStatus { LOADING, ERROR, DONE }
+
 /**
  * The [ViewModel] that is attached to the [OverviewFragment].
  */
 class OverviewViewModel : ViewModel() {
 
-    // The internal MutableLiveData String that stores the most recent response
-    private val _response = MutableLiveData<String>()
-
-    // The external immutable LiveData for the response String
-    val response: LiveData<String>
-        get() = _response
+    private val _status = MutableLiveData<MarsApiStatus>()
+    val status: LiveData<MarsApiStatus>
+        get() = _status
 
     private val _properties = MutableLiveData<List<MarsProperty>>()
     val properties: LiveData<List<MarsProperty>>
@@ -61,15 +60,17 @@ class OverviewViewModel : ViewModel() {
             // Start network call
             val getPropertiesDeferred = MarsApi.retrofitService.getPropertiesAsync() // Retrofit works on background thread
             try {
+                _status.value = MarsApiStatus.LOADING
                 // await() returns result of network call. It is non-blocking
                 val listResult = getPropertiesDeferred.await()
-                _response.value = "${listResult.size} Mars properties received"
+                _status.value = MarsApiStatus.DONE
 
                 if(listResult.isNotEmpty()) {
                     _properties.value = listResult
                 }
             } catch (e: Exception) {
-                _response.value = "Failure: ${e.message}"
+                _status.value = MarsApiStatus.ERROR
+                _properties.value = ArrayList()
             }
         }
     }
