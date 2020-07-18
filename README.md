@@ -1236,3 +1236,15 @@ Explanation given in comment format. Follow repos in order.
                     get() = type == "rent"
             }
             ```
+
+13. [DevBytes-starter](DevBytes-starter)
+
+    1. **Repository pattern and caching**:
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository
+
+        1. Theory: Caching in android is performed using SQLite and Room. **Separation of concerns principle** should be applied when using caching:
+
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-repository/img/69021c8142d29198.png)
+
+            - **Repository class**: It isolates data sources(online and offline) from rest of the app, providing a clean API to access data. It contains logic on when to fetch data from internet and when to use cache. Repository is part of the MVVM pattern.
+            - Maintain separate network, domain and database objects.
