@@ -1096,3 +1096,51 @@ Explanation given in comment format. Follow repos in order.
                     }
                 }
                 ```
+
+    2. **Display images from internet with Glide**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-images
+
+        **Implementation**
+        1. Import glide in app level [`build.gradle`](MarsRealEstate-Starter/app/build.gradle)
+        2. In [`BindingAdapters.kt`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/BindingAdapters.kt) Create binding adapter which takes URL string and calls Glide to fetch and display data.
+
+            ```kotlin
+            @BindingAdapter("imageUrl")
+            fun bindImage(imageView: ImageView, imageUrl: String?) {
+                // See if url is not null
+                imageUrl?.let {
+                    val imageUri = it.toUri().buildUpon().scheme("https").build()
+            
+                    Glide.with(imageView.context)
+                            .load(imageUri)
+                            .apply(RequestOptions() //optional- for loading placeholder and error image
+                                    .placeholder(R.drawable.loading_animation)
+                                    .error(R.drawable.ic_broken_image))
+                            .into(imageView)
+                }
+            }
+            ```
+
+        3. In [`OverviewViewModel`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewViewModel.kt) create `LiveData` field `property` to store first item from `MarsData` list.
+
+            ```kotlin
+            if(listResult.isNotEmpty()) {
+                _property.value = listResult[0]
+            }
+            ```
+
+        4. In [`grid_view_item.xml`](MarsRealEstate-Starter/app/src/main/res/layout/grid_view_item.xml) use binding adapter to display image.
+
+            ```xml
+                <ImageView
+                    android:id="@+id/mars_image"
+                    app:imageUrl="@{viewModel.property.imgSrcUrl}" />
+            ```
+
+        5. In [`OverviewFragment`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewFragment.kt) inflate `grid_view_item` using data binding. Now image will be displayed.
+
+            ```kotlin
+            val binding = GridViewItemBinding.inflate(inflater)
+            ```
+
+         !()[https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-images/img/144df3c58ea3ce44.png]
