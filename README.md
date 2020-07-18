@@ -1144,3 +1144,37 @@ Explanation given in comment format. Follow repos in order.
             ```
 
          !()[https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-images/img/144df3c58ea3ce44.png]
+
+    3. **Display images in grid `RecyclerView`**
+
+        Method is similar to the one used in `RecyclerView` codelab. But code can be made more readable in following ways:
+        
+        1. In [`BindingAdapters.kt`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/BindingAdapters.kt) use binding adapter `listData` to adapter with data.
+
+            ```kotlin
+            @BindingAdapter("listData")
+            fun bindRecyclerView(recyclerView: RecyclerView, data: List<MarsProperty>?) {
+                data?.let {
+                    val adapter = recyclerView.adapter as PhotoGridAdapter
+                    adapter.submitList(data)
+                }
+            }
+            ```
+
+        2. Use layout file [`fragment_overview.xml`](MarsRealEstate-Starter/app/src/main/res/layout/fragment_overview.xml) to set `GridLayoutManager`, `spanCount` and `listData` binding adapter.
+
+            ```xml
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/photos_grid"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="2"
+                app:listData="@{viewModel.properties}"
+                tools:itemCount="16"
+                tools:listitem="@layout/grid_view_item" />
+            ```
+           
+            To setup adapter in `OverviewFragment` just use:
+           
+            ```kotlin
+            binding.photosGrid.adapter = PhotoGridAdapter()
+            ```
