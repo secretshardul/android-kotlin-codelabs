@@ -1215,3 +1215,24 @@ Explanation given in comment format. Follow repos in order.
                         android:visibility="@{marsProperty.rental ? View.GONE : View.VISIBLE}" />
                 </FrameLayout>
             ```
+
+    5. **Add navigation to real estate app with parcelable object for safe args**: The steps are similar to those used in `RecyclerView` click handling tutorial earlier.
+
+        ![](images/2020-07-18-19-18-53.png)
+
+        1. In [`OverviewFragment`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/overview/OverviewFragment.kt) pass lambda click handler when setting up adapter. Bind this click handler to `RecyclerView` view holder.
+        2. Click handler changes value of a `LiveData` value in `OverviewViewModel`. An observer observes this change and navigates to `DetailFragment`.
+        3. A `MarsProperty` object is passed as an argument to `DetailFragment` when navigating. But a class must be made **parcelable** to be used as navigation safe args. In [`MarsProperty`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/network/MarsProperty.kt) use `@Parcelize` annotation and extend `Parcelable` class.
+
+            ```kotlin
+            @Parcelize
+            data class MarsProperty(
+                    val id: String,
+                    @Json(name = "img_src") val imgSrcUrl: String, // Rename received attribute using camel case
+                    val type: String,
+                    val price: Double
+            ) : Parcelable {
+                val isRental
+                    get() = type == "rent"
+            }
+            ```
