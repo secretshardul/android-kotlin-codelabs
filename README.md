@@ -1178,3 +1178,40 @@ Explanation given in comment format. Follow repos in order.
             ```kotlin
             binding.photosGrid.adapter = PhotoGridAdapter()
             ```
+
+    4. **Display overlay image over image, use binding expressions**: Show `$` image over properties available for sale, i.e. not rental type.
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-filtering
+
+        ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-internet-filtering/img/670b5be64a12ddc.png)
+        
+        1. In [`MarsProperty`](MarsRealEstate-Starter/app/src/main/java/com/example/android/marsrealestate/network/MarsProperty.kt) add `isRental` variable to see if property is of type 'rent'.
+        2. In [`grid_view_item.xml`](MarsRealEstate-Starter/app/src/main/res/layout/grid_view_item.xml) add `<import>` statement in `<data>` tags. It allows us to import classes for evaluating **binding expressions** like `android:visibility="@{marsProperty.rental ? View.GONE : View.VISIBLE}"` in XML layout files.
+        3. `FrameLayout`: It is used to display views in a stacked manner. `$` symbol image will be stacked over Mars property image.
+
+            ```xml
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="170dp">
+                    <ImageView
+                        android:id="@+id/mars_image"
+                        android:layout_width="match_parent"
+                        android:layout_height="170dp"
+                        android:scaleType="centerCrop"
+                        android:adjustViewBounds="true"
+                        android:padding="2dp"
+                        app:imageUrl="@{marsProperty.imgSrcUrl}"
+                        tools:src="@tools:sample/backgrounds/scenic"/>
+            
+                    <!-- Display $ sign if property is for sale(not rental) -->
+                    <ImageView
+                        android:id="@+id/mars_property_type"
+                        android:layout_width="wrap_content"
+                        android:layout_height="45dp"
+                        android:layout_gravity="bottom|end"
+                        android:adjustViewBounds="true"
+                        android:padding="5dp"
+                        android:scaleType="fitCenter"
+                        android:src="@drawable/ic_for_sale_outline"
+                        android:visibility="@{marsProperty.rental ? View.GONE : View.VISIBLE}" />
+                </FrameLayout>
+            ```

@@ -24,4 +24,7 @@ data class MarsProperty(
         @Json(name = "img_src") val imgSrcUrl: String, // Rename received attribute using camel case
         val type: String,
         val price: Double
-)
+) {
+    val isRental
+        get() = type == "rent"
+}

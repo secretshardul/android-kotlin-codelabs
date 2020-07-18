@@ -24,14 +24,34 @@
         <variable
             name="marsProperty"
             type="com.example.android.marsrealestate.network.MarsProperty" />
+
+        <!-- import can be used to call android classes from within XML -->
+        <import type="android.view.View" />
     </data>
-    <ImageView
-        android:id="@+id/mars_image"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="170dp"
-        android:scaleType="centerCrop"
-        android:adjustViewBounds="true"
-        android:padding="2dp"
-        app:imageUrl="@{marsProperty.imgSrcUrl}"
-        tools:src="@tools:sample/backgrounds/scenic"/>
+        android:layout_height="170dp">
+        <ImageView
+            android:id="@+id/mars_image"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:scaleType="centerCrop"
+            android:adjustViewBounds="true"
+            android:padding="2dp"
+            app:imageUrl="@{marsProperty.imgSrcUrl}"
+            tools:src="@tools:sample/backgrounds/scenic"/>
+
+        <!-- Display $ sign if property is for sale(not rental) -->
+        <ImageView
+            android:id="@+id/mars_property_type"
+            android:layout_width="wrap_content"
+            android:layout_height="45dp"
+            android:layout_gravity="bottom|end"
+            android:adjustViewBounds="true"
+            android:padding="5dp"
+            android:scaleType="fitCenter"
+            android:src="@drawable/ic_for_sale_outline"
+            android:visibility="@{marsProperty.rental ? View.GONE : View.VISIBLE}" />
+    </FrameLayout>
+
 </layout>
