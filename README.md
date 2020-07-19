@@ -1248,3 +1248,7 @@ Explanation given in comment format. Follow repos in order.
 
             - **Repository class**: It isolates data sources(online and offline) from rest of the app, providing a clean API to access data. It contains logic on when to fetch data from internet and when to use cache. Repository is part of the MVVM pattern.
             - Maintain separate network, domain and database objects.
+
+        2. **Implementation**
+            1. Create database entities, DAO and Room database in [`DatabaseEntities.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/database/DatabaseEntities.kt) and [`Room.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/database/Room.kt). This database acts as cache.
+            2. In [`DatabaseEntities.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/database/DatabaseEntities.kt) and [`DataTransferObjects.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/network/DataTransferObjects.kt) add functions to transform database, domain and network objects into one another.
