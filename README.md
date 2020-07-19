@@ -1339,3 +1339,18 @@ Explanation given in comment format. Follow repos in order.
                     .setConstraints(constraints)
                     .build()
             ```
+
+14. [GDGFinder-Starter](GDGFinder-Starter)
+
+    1. **Styles and themes**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-styles-and-themes
+
+        1. **Android styling system**: Android has a pyramidal style system. Styling techniques at the top have higher precedence than those at bottom.
+
+            ![](https://codelabs.developers.google.com/codelabs/kotlin-android-training-styles-and-themes/img/e7851427054b568d.png)
+
+            1. **View attributes**: Specified explicitly for each view. Use for one-off designs or for customization.
+            2. **Style**: Create collection of reusable styling information.
+            3. **Default style**: Provided by android system.
+            4. **Theme**: Used to define colors, fonts etc for whole app.
+            5. **Text appearance**: For font only.
