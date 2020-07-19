@@ -1362,3 +1362,16 @@ Explanation given in comment format. Follow repos in order.
                 android:name="preloaded_fonts"
                 android:resource="@array/preloaded_fonts" />
             ```
+
+        3. **Add font to app theme**: This applies font to entire app. In `styles.xml` add attributes to `AppTheme` style. App theme font can be overridden by using a view attribute.
+
+            ```xml
+            <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
+                <!-- Customize your theme here. -->
+                <item name="colorPrimary">@color/colorPrimary</item>
+                <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+                <item name="colorAccent">@color/colorAccent</item>
+                <item name="fontFamily">@font/lobster_two</item>
+                <item name="android:fontFamily">@font/lobster_two</item>
+            </style>
+            ```
