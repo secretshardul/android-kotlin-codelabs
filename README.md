@@ -1254,3 +1254,16 @@ Explanation given in comment format. Follow repos in order.
             2. In [`DatabaseEntities.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/database/DatabaseEntities.kt) and [`DataTransferObjects.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/network/DataTransferObjects.kt) add functions to transform database, domain and network objects into one another.
             3. In [`VideosRepository.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/repository/VideosRepository.kt) create repository. It has function `refreshVideos()` to fetch data from internet and update cache. The repository has attribute `videos` which returns a `LiveData` list of domain objects.
             4. In `DevByteViewModel.kt` remove API call logic. Fetch `LiveData` from repository instead and display to user. Refresh repository data when view model is initialized using `init{}` constructor.
+
+    2. **`WorkManager` for background tasks**
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-work-manager
+
+        1. **Theory**
+            - `WorkManager` is an android architecture component for performing background tasks.
+            - It's used for work that is deferrable, i.e. not required to run immediately. Eg. send analytics to server.
+            - It ensures **guaranteed execution**, i.e. task will run even when app exits or device restarts.
+            - `WorkManager` library has 3 classes:
+                1. `Worker`: Contains code to be executed in background. This class is extended by our class and the `doWork()` method is overridden. The `CoroutineWorker` class is a `Worker` child class used to run worker using coroutines.
+                2. `WorkRequest`: Allows us to set criteria on when a background task runs. Battery status, network status, charge state etc can be used as criteria. Work request can either be one-off(using `OneTimeWorkRequest` class) or periodic(using `PeriodicWorkRequest` class). The **minimum interval for periodic requests is 15 minutes**.
+                3. `WorkManager`: Schedules and runs the `WorkRequest`. But exact execution time is subject to system optimizations.
+            - Workers get max 10 minutes to complete execution. Beyond this the worker is forcefully stopped.
