@@ -17,9 +17,8 @@
 package com.example.android.devbyteviewer
 
 import android.app.Application
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
+import android.os.Build
+import androidx.work.*
 import com.example.android.devbyteviewer.work.RefreshDataWorker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -53,8 +52,21 @@ class DevByteApplication : Application() {
      * Setup WorkManager background job to 'fetch' new network data daily.
      */
     private fun setupRecurringWork() {
+        // Run only when constraints are met
+        val constraints = Constraints.Builder()
+                .setRequiredNetworkType(NetworkType.UNMETERED)
+                .setRequiresBatteryNotLow(true)
+                .setRequiresCharging(true)
+                .apply {
+                    if(Build.VERSION.SDK_INT >= 23) {
+                        setRequiresDeviceIdle(true)
+                    }
+                }
+                .build()
+
         // Repeat periodic request every 15 minutes
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES)
+                .setConstraints(constraints)
                 .build()
 
         // KEEP policy: if pending work exists with same name, discard new work

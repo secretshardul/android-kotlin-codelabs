@@ -1327,3 +1327,15 @@ Explanation given in comment format. Follow repos in order.
                     }
                 }
                 ```
+
+        3. **Set system constraints for executing work**: Scheduled work will be executed only when constraints are met.
+
+            ```kotlin
+            val constraints = Constraints.Builder()
+                    .setRequiresBatteryNotLow(true)
+                    .build()
+
+            val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES)
+                    .setConstraints(constraints)
+                    .build()
+            ```
