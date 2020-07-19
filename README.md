@@ -1375,3 +1375,30 @@ Explanation given in comment format. Follow repos in order.
                 <item name="android:fontFamily">@font/lobster_two</item>
             </style>
             ```
+
+        4. **Styles**:
+            - They're defined in [`styles.xml`](GDGFinder-Starter/app/src/main/res/values/styles.xml)
+            - **Naming convention**: Name style based on the attribute to which it'll be assigned. Eg. to set `android:textAppearance` field of a `TextView` name the style as `TextAppearance.anyName`.
+            
+                ```xml
+                <style name="TextAppearance.Title" parent="TextAppearance.MaterialComponents.Headline6">
+                    <item name="android:textSize">24sp</item>
+                    <item name="android:textColor">#555555</item>
+                </style>
+                ```
+
+            This will be assigned to
+
+                ```xml
+                <TextView
+                    android:id="@+id/subtitle"
+                    android:textAppearance="@style/TextAppearance.Subtitle"
+                ```
+
+            - **Inheritance**: Styles can have other styles as parents. Eg. in above example `TextAppearance.Title` style is child of `TextAppearance.MaterialComponents.Headline6` style. User defined styles can also be used as parent styles. Eg. the `TextAppearance.Subtitle` inherits `TextAppearance.Title`.
+
+            ```
+            <style name="TextAppearance.Subtitle" parent="TextAppearance.Title">
+                <item name="android:textSize">18sp</item>
+            </style>
+            ```
