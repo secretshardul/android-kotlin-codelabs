@@ -1354,3 +1354,11 @@ Explanation given in comment format. Follow repos in order.
             3. **Default style**: Provided by android system.
             4. **Theme**: Used to define colors, fonts etc for whole app.
             5. **Text appearance**: For font only.
+
+        2. **Add downloadable fonts**: They're downloaded by app at runtime. Open design view > font > More button > More fonts > Select desired font and select "create downloadable font". This adds font file in `res/font` and imports it in `AndroidManifest.xml` using `preloaded_fonts` file.
+
+            ```xml
+            <meta-data
+                android:name="preloaded_fonts"
+                android:resource="@array/preloaded_fonts" />
+            ```
