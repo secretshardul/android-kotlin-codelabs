@@ -17,12 +17,22 @@
 package com.example.android.devbyteviewer
 
 import android.app.Application
+import androidx.work.ExistingPeriodicWorkPolicy
+import androidx.work.PeriodicWorkRequestBuilder
+import androidx.work.WorkManager
+import com.example.android.devbyteviewer.work.RefreshDataWorker
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 /**
  * Override application to setup background work via WorkManager
  */
 class DevByteApplication : Application() {
+
+    private val applicationScope = CoroutineScope(Dispatchers.Default)
 
     /**
      * onCreate is called before the first screen is shown to the user.
@@ -32,6 +42,26 @@ class DevByteApplication : Application() {
      */
     override fun onCreate() {
         super.onCreate()
-        Timber.plant(Timber.DebugTree())
+        applicationScope.launch {
+            // Initialize Timber and worker in coroutine so as not to block the main thread
+            Timber.plant(Timber.DebugTree())
+            setupRecurringWork()
+        }
+    }
+
+    /**
+     * Setup WorkManager background job to 'fetch' new network data daily.
+     */
+    private fun setupRecurringWork() {
+        // Repeat periodic request every 15 minutes
+        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES)
+                .build()
+
+        // KEEP policy: if pending work exists with same name, discard new work
+        WorkManager.getInstance().enqueueUniquePeriodicWork(
+                RefreshDataWorker.WORK_NAME,
+                ExistingPeriodicWorkPolicy.KEEP,
+                repeatingRequest
+        )
     }
 }

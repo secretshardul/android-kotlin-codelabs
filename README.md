@@ -1267,3 +1267,63 @@ Explanation given in comment format. Follow repos in order.
                 2. `WorkRequest`: Allows us to set criteria on when a background task runs. Battery status, network status, charge state etc can be used as criteria. Work request can either be one-off(using `OneTimeWorkRequest` class) or periodic(using `PeriodicWorkRequest` class). The **minimum interval for periodic requests is 15 minutes**.
                 3. `WorkManager`: Schedules and runs the `WorkRequest`. But exact execution time is subject to system optimizations.
             - Workers get max 10 minutes to complete execution. Beyond this the worker is forcefully stopped.
+
+        2. **Implementation**:
+            1. Add `WorkManager` dependency in app level [`build.gradle`](DevBytes-starter/app/build.gradle)
+            2. Create [`RefreshDataWorker`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/DevByteApplication.kt) and make it extend `CoroutineWorker`. This `Worker` contains code for updating repository in background. Create a constant `WORKER_NAME` in a companion object. This is a unique name needed by `WorkManager` to identify scheduled work.
+
+                ```kotlin
+                class RefreshDataWorker(appContext: Context, params: WorkerParameters): CoroutineWorker(appContext, params) {
+                    companion object {
+                        // Every scheduled work request must have a unique name
+                        const val WORK_NAME = "com.example.android.devbyteviewer.work.RefreshDataWorker"
+                    }
+                    override suspend fun doWork(): Result {
+                        /** Repository makes API calls and stores data in cache. It acts as data source **/
+                        val videosRepository = VideosRepository(getDatabase(applicationContext))
+                        try {
+                            videosRepository.refreshVideos()
+                        } catch (e: HttpException) {
+                            Timber.d("video refresh failed, retrying")
+                            return Result.retry()
+                        }
+                        Timber.d("videos refreshed")
+                        return Result.success()
+                    }
+                }
+                ```
+               
+                Here the `doWork()` function must return a `ListenableWorker.Result` object:
+                    1. `Result.success()`: Work completed successfully.
+                    2. `Result.failure()`: Work completed with permanant failure.
+                    3. `Result.retry()`: Work encountered a transient failure and should be retried.
+
+            3. Create a periodic work request in [`DevByteApplication.kt`](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/DevByteApplication.kt). Enqueue this work request with `WorkManager`. Work requests are made from the `Application` class because this class is run first when the app start.
+
+                ```kotlin
+                    private fun setupRecurringWork() {
+                        // Repeat periodic request every 15 minutes
+                        val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(15, TimeUnit.MINUTES)
+                                .build()
+                
+                        // KEEP policy: if pending work exists with same name, discard new work
+                        WorkManager.getInstance().enqueueUniquePeriodicWork(
+                                RefreshDataWorker.WORK_NAME,
+                                ExistingPeriodicWorkPolicy.KEEP,
+                                repeatingRequest
+                        )
+                    }
+                ```
+
+            4. Use a coroutine in [`DevByteApplication`'s](DevBytes-starter/app/src/main/java/com/example/android/devbyteviewer/DevByteApplication.kt) `onCreate()` method to execute the worker function `setupRecurringWork()`. This is so that main thread is not blocked during scheduling.
+
+                ```kotlin
+                override fun onCreate() {
+                    super.onCreate()
+                    applicationScope.launch {
+                        // Initialize Timber and worker in coroutine so as not to block the main thread
+                        Timber.plant(Timber.DebugTree())
+                        setupRecurringWork()
+                    }
+                }
+                ```
