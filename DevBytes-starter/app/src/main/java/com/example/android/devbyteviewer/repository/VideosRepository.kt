@@ -15,3 +15,36 @@
  */
 
 package com.example.android.devbyteviewer.repository
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Transformations
+import com.example.android.devbyteviewer.database.VideosDatabase
+import com.example.android.devbyteviewer.database.asDomainModel
+import com.example.android.devbyteviewer.domain.DevByteVideo
+import com.example.android.devbyteviewer.network.DevByteNetwork
+import com.example.android.devbyteviewer.network.asDatabaseModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import timber.log.Timber
+
+/** Repo for fetching videos from network and storing them in cache **/
+class VideosRepository(private val database: VideosDatabase) {
+
+    /** Return LiveData list of videos. Map database object list to domain object list **/
+    val videos: LiveData<List<DevByteVideo>> = Transformations.map(database.videoDao.getVideos()) {
+        databaseVideos -> databaseVideos.asDomainModel()
+    }
+
+    /**
+     * Refresh videos stored in cache
+     *
+     * Use suspend function and IO context to fetch new data from server and write to SQLite cache.
+     */
+    suspend fun refreshVideos() {
+        withContext(Dispatchers.IO) {
+            Timber.d("Refresh videos is called")
+            val playlist = DevByteNetwork.devbytes.getPlaylist().await()
+            database.videoDao.insertAll(playlist.asDatabaseModel())
+        }
+    }
+}
