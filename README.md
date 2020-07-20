@@ -1461,3 +1461,12 @@ Explanation given in comment format. Follow repos in order.
             ```kotlin
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
             ```
+
+# Kotlin advanced course
+
+1. [android-kotlin-notifications](android-kotlin-notifications): Android notifications.
+    > https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications
+
+    1. **Theory**
+        1. `NotificationManager`: System service used to send, update or cancel notifications.
+        2. **Notification channels**: Used to group similar notifications and set their priority and behavior. They're needed to display notifications from API 26 and onwards.
