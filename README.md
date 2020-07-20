@@ -1591,3 +1591,19 @@ Explanation given in comment format. Follow repos in order.
                 builder.setSmallIcon(R.drawable.cooked_egg)
                     .setPriority(NotificationCompat.PRIORITY_LOW)
                 ```
+
+        9. **Notification badges**: They're small dots which appear on the app icon. They're available from API 26 and onwards. Users can long press the icon to reveal the notification.
+                ![](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications/img/55c661eded5a3524.png)
+                ![](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications/img/62cb51f295326cc6.png)
+
+            Notification badges are displayed by default. To disable badge add `setShowBadge(false)` to channel creation code. In [`EggTimerFragment.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/ui/EggTimerFragment.kt)
+
+            ```kotlin
+            val notificationChannel = NotificationChannel(
+                channelId,
+                channelName,
+                NotificationManager.IMPORTANCE_LOW
+            ).apply {
+                setShowBadge(false)
+            }
+            ```
