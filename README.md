@@ -1431,3 +1431,16 @@ Explanation given in comment format. Follow repos in order.
                     android:id="@+id/subtitle"
                     style="?attr/textAppearanceHeadline6" />
                 ```
+
+        3. **Theme overlays**: They're used to override themes for specific views, E.g. change toolbar theme and color. To apply theme overlay-
+            1. Add theme
+            2. Access theme styles using `?attr/`.
+
+            ```xml
+            <androidx.appcompat.widget.Toolbar
+                    android:id="@+id/toolbar"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
+                    android:background="?attr/colorPrimaryDark">
+            ```
