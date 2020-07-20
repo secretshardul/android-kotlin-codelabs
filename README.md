@@ -1444,3 +1444,5 @@ Explanation given in comment format. Follow repos in order.
                     android:theme="@style/ThemeOverlay.MaterialComponents.Dark.ActionBar"
                     android:background="?attr/colorPrimaryDark">
             ```
+
+        4. **Material color tool**: Create color schema from (https://material.io/resources/color)[https://material.io/resources/color] and import the generated `color.xml` in android project.
