@@ -1534,3 +1534,22 @@ Explanation given in comment format. Follow repos in order.
             ```
 
         5. **Cancel notifications**: Use `notificationManager.cancelAll()`
+        6. **Expandable notifications**(see [`NotificationUtils.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/util/NotificationUtils.kt)): Various expandable styles like `BigTextStyle`, `BigPictureStyle`, `InboxStyle`, MediaStyle` and `MessagingStyle` are available. To create `BigPictureStyle`:
+
+            ```kotlin
+            // Prepare image
+            val eggImage = BitmapFactory.decodeResource(applicationContext.resources, R.drawable.cooked_egg)
+        
+            // Initialize bigPictureStyle for expanded notification
+            val bigPicStyle = NotificationCompat.BigPictureStyle()
+                .bigPicture(eggImage)
+                .bigLargeIcon(null) // hide icon when notification is expanded
+           
+            builder.setSmallIcon(R.drawable.cooked_egg)
+                .setContentTitle(applicationContext.getString(R.string.notification_title))
+                .setContentText(messageBody)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true) // Dismiss notification when clicked
+                .setStyle(bigPicStyle) // Set big picture style
+                .setLargeIcon(eggImage) // Set image
+            ```
