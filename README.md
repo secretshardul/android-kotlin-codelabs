@@ -1532,3 +1532,5 @@ Explanation given in comment format. Follow repos in order.
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true) // Dismiss notification when clicked
             ```
+
+        5. **Cancel notifications**: Use `notificationManager.cancelAll()`
