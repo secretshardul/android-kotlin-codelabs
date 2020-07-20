@@ -1553,3 +1553,22 @@ Explanation given in comment format. Follow repos in order.
                 .setStyle(bigPicStyle) // Set big picture style
                 .setLargeIcon(eggImage) // Set image
             ```
+
+        7. **Notification action buttons**: Up to 3 buttons can be displayed in a notification. Use `addAction` on notification builder to add notification action. Here a **pending intent** setting up a **broadcast receiver** has to be passed. Here the intent sets up a broadcast receiver to snooze the timer.
+
+                ```kotlin
+                val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
+                val snoozePendingIntent: PendingIntent = PendingIntent.getBroadcast(
+                    applicationContext,
+                    REQUEST_CODE,
+                    snoozeIntent,
+                    FLAGS
+                )
+               
+                builder.setSmallIcon(R.drawable.cooked_egg)
+                    .addAction(
+                        R.drawable.egg_icon,
+                        applicationContext.getString(R.string.snooze),
+                        snoozePendingIntent
+                    )
+                ```

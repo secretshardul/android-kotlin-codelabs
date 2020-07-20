@@ -60,6 +60,13 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .bigLargeIcon(null) // hide icon when notification is expanded
 
     // TODO: Step 2.2 add snooze action
+    val snoozeIntent = Intent(applicationContext, SnoozeReceiver::class.java)
+    val snoozePendingIntent: PendingIntent = PendingIntent.getBroadcast(
+        applicationContext,
+        REQUEST_CODE,
+        snoozeIntent,
+        FLAGS
+    )
 
     // TODO: Step 1.2 get an instance of NotificationCompat.Builder
     /** Notification channels- Used to group similar notifications **/
@@ -77,6 +84,11 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
         .setAutoCancel(true) // Dismiss notification when clicked
         .setStyle(bigPicStyle) // Set big picture style
         .setLargeIcon(eggImage) // Set image
+        .addAction(
+            R.drawable.egg_icon,
+            applicationContext.getString(R.string.snooze),
+            snoozePendingIntent
+        )
     // TODO: Step 1.13 set content intent
 
         // TODO: Step 2.1 add style to builder
