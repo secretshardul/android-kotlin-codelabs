@@ -1411,3 +1411,23 @@ Explanation given in comment format. Follow repos in order.
             - Replace `Scrollview` tag with `NestedScrollView`.
             - Add `FloatingActionButton` item below `NestedScrollView`. Add icon and padding to the FAB.
             - Set listener to the FAB using data binding.
+
+        2. **Use material styles**:
+            - In [`home_fragment.xml`](GDGFinder-Starter/app/src/main/res/layout/home_fragment.xml) apply style to title using `app:style="@style/TextAppearance.MaterialComponents.Headline5"`.
+            - Shortcut for referencing values from current theme: Use `?attr/` for searching. Eg. `style="?attr/textAppearanceHeadline5"`.
+            - **Overriding current theme styles**: Here we override `?attr/textAppearanceHeadline6`. In `styles.xml` create new style and make it inherit a material style. Override attributes as desired. Then add an item with `textAppearanceHeadline6` that references the created style.
+
+                ```xml
+                <style name="TextAppearance.CustomHeadline6" parent="TextAppearance.MaterialComponents.Headline6">
+                    <item name="android:textSize">18sp</item>
+                    <item name="textAppearanceHeadline6">@style/TextAppearance.CustomHeadline6</item>
+                </style>
+                ```
+           
+            This style can now be used as
+    
+                ```xml
+                <TextView
+                    android:id="@+id/subtitle"
+                    style="?attr/textAppearanceHeadline6" />
+                ```
