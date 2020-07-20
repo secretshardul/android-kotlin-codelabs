@@ -1470,3 +1470,42 @@ Explanation given in comment format. Follow repos in order.
     1. **Theory**
         1. `NotificationManager`: System service used to send, update or cancel notifications.
         2. **Notification channels**: Used to group similar notifications and set their priority and behavior. They're needed to display notifications from API 26 and onwards.
+
+    2. **Implementation**
+        1. In [`NotificationUtils.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/util/NotificationUtils.kt) set up notification builder. This sets the notification icon, title, body and channel. This code is part of `NotificationManager.sendNotification()` function for code reusability.
+
+            ```kotlin
+            val builder = NotificationCompat.Builder(
+                applicationContext, applicationContext.getString(R.string.egg_notification_channel_id))
+            builder.setSmallIcon(R.drawable.cooked_egg)
+                .setContentTitle(applicationContext.getString(R.string.notification_title))
+                .setContentText(messageBody)
+            ```
+
+        2. In [`EggTimerFragment.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/ui/EggTimerFragment.kt) `onCreateView()` function create a notification channel for API level 26 and above. Set up channel description and settings for light and vibration.
+
+            ```kotlin
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                val notificationChannel = NotificationChannel(
+                    channelId,
+                    channelName,
+                    NotificationManager.IMPORTANCE_LOW
+                )
+                notificationChannel.enableLights(true)
+                notificationChannel.lightColor = Color.RED
+                notificationChannel.enableVibration(true)
+                notificationChannel.description = "Time for breakfast"
+    
+                val notificationManager = requireActivity().getSystemService(NotificationManager::class.java)
+                notificationManager.createNotificationChannel(notificationChannel)
+            }
+            ```
+
+        3. Launch notification in [`EggTimerViewModel.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/ui/EggTimerViewModel.kt) using `sendNotification` function created earlier and using `NotificationManager`.
+
+            ```kotlin
+            val notificationManager = ContextCompat
+                .getSystemService(app, NotificationManager::class.java) as NotificationManager
+
+            notificationManager.sendNotification(app.getString(R.string.timer_running), app)
+            ```
