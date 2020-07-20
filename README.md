@@ -1572,3 +1572,22 @@ Explanation given in comment format. Follow repos in order.
                         snoozePendingIntent
                     )
                 ```
+
+        8. **Notification priority**:
+            1. For API 26 and higher priority is set at channel level. In [`EggTimerFragment.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/ui/EggTimerFragment.kt)
+
+                ```kotlin
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val notificationChannel = NotificationChannel(
+                        channelId,
+                        channelName,
+                        NotificationManager.IMPORTANCE_LOW
+                    )
+                ```
+
+            2. For older versions priority is set at message level. In [`NotificationUtils.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/util/NotificationUtils.kt)
+
+                ```kotlin
+                builder.setSmallIcon(R.drawable.cooked_egg)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                ```

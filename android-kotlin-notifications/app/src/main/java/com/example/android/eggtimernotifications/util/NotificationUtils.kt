@@ -89,6 +89,7 @@ fun NotificationManager.sendNotification(messageBody: String, applicationContext
             applicationContext.getString(R.string.snooze),
             snoozePendingIntent
         )
+        .setPriority(NotificationCompat.PRIORITY_LOW)
     // TODO: Step 1.13 set content intent
 
         // TODO: Step 2.1 add style to builder
