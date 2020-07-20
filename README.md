@@ -1446,3 +1446,18 @@ Explanation given in comment format. Follow repos in order.
             ```
 
         4. **Material color tool**: Create color schema from (https://material.io/resources/color)[https://material.io/resources/color] and import the generated `color.xml` in android project.
+
+    3. **Dark theme**
+        1. In `styles.xml` change `AppTheme` parent to `Theme.MaterialComponents.DayNight`.
+
+            ```xml
+            <style name="AppTheme" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+                <item name="colorPrimary">@color/primaryColor</item>
+            </style>
+            ```
+
+        2. In `onCreate()` function of main activity set night mode as default.
+
+            ```kotlin
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+            ```
