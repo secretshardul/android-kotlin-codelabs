@@ -1402,3 +1402,12 @@ Explanation given in comment format. Follow repos in order.
                 <item name="android:textSize">18sp</item>
             </style>
             ```
+
+    2. **Material design**:
+        > https://codelabs.developers.google.com/codelabs/kotlin-android-training-material-design-dimens-colors
+
+        1. **Add floating action button**
+            - In [`home_fragment.xml`](GDGFinder-Starter/app/src/main/res/layout/home_fragment.xml) wrap `ScrollView` with `FrameLayout`. `FrameLayout` allows views to be stacked on one another.
+            - Replace `Scrollview` tag with `NestedScrollView`.
+            - Add `FloatingActionButton` item below `NestedScrollView`. Add icon and padding to the FAB.
+            - Set listener to the FAB using data binding.
