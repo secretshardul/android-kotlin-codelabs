@@ -1509,3 +1509,26 @@ Explanation given in comment format. Follow repos in order.
 
             notificationManager.sendNotification(app.getString(R.string.timer_running), app)
             ```
+
+        4. **Navigate on notification press using Pending intent**: Pending intent is used to execute an intent when notification is pressed, e.g. taking user back to the app. Pending intents are usable even when the app has been killed. To open app when notification is pressed add this code to `sendNotification()` function in [`NotificationUtils.kt`](android-kotlin-notifications/app/src/main/java/com/example/android/eggtimernotifications/util/NotificationUtils.kt)-
+
+            ```kotlin
+            fun NotificationManager.sendNotification(messageBody: String, applicationContext: Context) {
+                val intent = Intent(applicationContext, MainActivity::class.java)
+                val pendingIntent = PendingIntent.getActivity(
+                    applicationContext,
+                    NOTIFICATION_ID,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT
+                )
+            ```
+
+            Add `pendingIntent` to Notification builder.
+
+            ```kotlin
+            builder.setSmallIcon(R.drawable.cooked_egg)
+                .setContentTitle(applicationContext.getString(R.string.notification_title))
+                .setContentText(messageBody)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true) // Dismiss notification when clicked
+            ```
