@@ -1677,3 +1677,9 @@ Explanation given in comment format. Follow repos in order.
                 ```
 
             2. When app is in background or not running, message data is not received by `onMessageREceived()` method. But it can be retrieved from app bundle when notification is clicked to open app. Source- https://stackoverflow.com/a/42279260/7721443
+
+3. [android-kotlin-login](android-kotlin-login)
+
+    1. **Firebase auth**
+        > https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-login
+
