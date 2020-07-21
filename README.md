@@ -1766,3 +1766,26 @@ Explanation given in comment format. Follow repos in order.
                     }
                 }
             ```
+
+    3. **Conditional navigation with login**: Here a new settings screen button is added. If unauthenticated user tries navigating to settings screen, he is redirected to login screen.
+        > https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-login-navigation
+
+        1. In [`SettingsFragment.kt`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/SettingsFragment.kt) listen to auth state and redirect unauthenticated user to login screen.
+
+            ```kotlin
+            viewModel.authenticationState.observe(viewLifecycleOwner, Observer { authenticationState ->
+                when(authenticationState) {
+                    LoginViewModel.AuthenticationState.AUTHENTICATED -> Log.i(TAG, "user logged in")
+                    else -> findNavController().navigate(SettingsFragmentDirections.actionSettingsFragmentToLoginFragment())
+                }
+            })
+            ```
+
+        Edit back button behavior to take user back to home screen from login screen. Otherwise user will get stuck in a loop trying to go back to settings fragment while the fragment keeps redirecting user to login screen. In [`nav_graph.xml`](android-kotlin-login/app/src/main/res/navigation/nav_graph.xml)
+        
+        ```xml
+        <action
+            android:id="@+id/action_settingsFragment_to_loginFragment"
+            app:destination="@id/loginFragment"
+            app:popUpTo="@id/mainFragment" />
+        ```
