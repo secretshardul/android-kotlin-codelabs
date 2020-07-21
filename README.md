@@ -1642,3 +1642,16 @@ Explanation given in comment format. Follow repos in order.
 
             ![](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications-fcm/img/c550ff957475c0f6.png)
 
+        4. **Subscribe to topic**: App can subscribe to specific topics like 'breakfast'. Users can chose to mute individual topics. In [`EggTimerFragment.kt`](android-kotlin-notifications-fcm/app/src/main/java/com/example/android/eggtimernotifications/ui/EggTimerFragment.kt)-
+
+            ```kotlin
+            FirebaseMessaging.getInstance().subscribeToTopic(TOPIC).addOnCompleteListener { task ->
+                var msg = getString(R.string.message_subscribed)
+                if (!task.isSuccessful) {
+                    msg = getString(R.string.message_subscribe_failed)
+                }
+                Toast.makeText(context, msg, Toast.LENGTH_SHORT).show()
+            }
+            ```
+
+            Use firebase console to send message to 'breakfast' topic. **App has to run in the background or has to be closed**.
