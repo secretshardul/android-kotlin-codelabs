@@ -1609,3 +1609,8 @@ Explanation given in comment format. Follow repos in order.
             ```
 
 2. [android-kotlin-notifications-fcm](android-kotlin-notifications-fcm): Push notifications with Firebase cloud messaging.
+    > https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications-fcm
+
+    1. **Theory**
+        - Push notifications use pub/sub pattern to deliver messages to interest clients.
+        - They are delivered even when the app is not running.
