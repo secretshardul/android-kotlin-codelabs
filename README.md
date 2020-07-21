@@ -1655,3 +1655,14 @@ Explanation given in comment format. Follow repos in order.
             ```
 
             Use firebase console to send message to 'breakfast' topic. **App has to run in the background or has to be closed**.
+
+        5. **Send data notifications**: They allow sending key-value pairs to the app. In [`MyFirebaseMessagingService.kt`](android-kotlin-notifications-fcm/app/src/main/java/com/example/android/eggtimernotifications/MyFirebaseMessagingService.kt)-
+
+            ```kotlin
+            override fun onMessageReceived(remoteMessage: RemoteMessage?) {
+                remoteMessage?.data?.let {
+                    Log.d(TAG, "Message data payload ${remoteMessage.data}")
+                }
+            ```
+           
+            **The app must be in foreground** so `onMessageReceived()` can get data. Otherwise only notification is shown.
