@@ -45,8 +45,10 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
     }
     // [END receive_message]
 
-    //TODO Step 3.2 log registration token
-    // [START on_new_token]
+    override fun onNewToken(token: String?) {
+        Log.d(TAG, "Refreshed token: $token")
+        sendRegistrationToServer(token)
+    }
 
     // [END on_new_token]
 

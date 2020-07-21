@@ -1614,3 +1614,31 @@ Explanation given in comment format. Follow repos in order.
     1. **Theory**
         - Push notifications use pub/sub pattern to deliver messages to interest clients.
         - They are delivered even when the app is not running.
+
+    2. **Implementation**:
+        1. Add firebase using Android studio extension.
+        2. Add firebase service to `AndroidManifest.xml`. Paste provided code.
+
+            ```xml
+            <service
+                android:name=".MyFirebaseMessagingService"
+                android:exported="false">
+                <intent-filter>
+                    <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                </intent-filter>
+            </service>
+            ```
+
+        3. Listen to tokens and send test notification: Firebase SDK generates a **registration token** for each app. This is needed to target a single device or a group of devices. This token can optionally be sent to the backend using `override fun onNewToken()`. In [`MyFirebaseMessagingService.kt`](android-kotlin-notifications-fcm/app/src/main/java/com/example/android/eggtimernotifications/MyFirebaseMessagingService.kt)-
+
+            ```kotlin
+            override fun onNewToken(token: String?) {
+                Log.d(TAG, "Refreshed token: $token")
+                sendRegistrationToServer(token)
+            }
+            ```
+
+            Copy this token and use it to send test notification from Firebase console.
+
+            ![](https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-notifications-fcm/img/c550ff957475c0f6.png)
+
