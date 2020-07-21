@@ -1666,3 +1666,14 @@ Explanation given in comment format. Follow repos in order.
             ```
            
             **The app must be in foreground** so `onMessageReceived()` can get data. Otherwise only notification is shown.
+
+        6. **Push message behavior in background and foreground**
+            1. When app is in foreground, message is received but notification is not displayed. However message data is received. Notification must be manually shown. In `onMessageReceived()` method in In [`MyFirebaseMessagingService.kt`](android-kotlin-notifications-fcm/app/src/main/java/com/example/android/eggtimernotifications/MyFirebaseMessagingService.kt)-
+
+                ```kotlin
+                remoteMessage?.notification?.let {notification ->
+                    sendNotification(notification.body as String)
+                }
+                ```
+
+            2. When app is in background or not running, message data is not received by `onMessageREceived()` method. But it can be retrieved from app bundle when notification is clicked to open app. Source- https://stackoverflow.com/a/42279260/7721443
