@@ -27,7 +27,6 @@ import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import com.example.android.firebaseui_login_sample.databinding.FragmentMainBinding
 import com.firebase.ui.auth.AuthUI
 import com.firebase.ui.auth.IdpResponse
@@ -37,7 +36,7 @@ class MainFragment : Fragment() {
 
     companion object {
         const val TAG = "MainFragment"
-        const val SIGN_IN_RESULT_CODE = 1001
+        const val SIGN_IN_REQUEST_CODE = 1001
     }
 
     // Get a reference to the ViewModel scoped to this Fragment
@@ -49,10 +48,7 @@ class MainFragment : Fragment() {
     ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_main, container, false)
 
-        // TODO Remove the two lines below once observeAuthenticationState is implemented.
-        binding.welcomeText.text = viewModel.getFactToDisplay(requireContext())
-        binding.authButton.text = getString(R.string.login_btn)
-
+        // Removed code displaying login message by default
         return binding.root
     }
 
@@ -61,15 +57,21 @@ class MainFragment : Fragment() {
         observeAuthenticationState()
 
         binding.authButton.setOnClickListener {
-            // TODO call launchSignInFlow when authButton is clicked
+            launchSignInFlow()
         }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        // TODO Listen to the result of the sign in process by filter for when
-        //  SIGN_IN_REQUEST_CODE is passed back. Start by having log statements to know
-        //  whether the user has signed in successfully
+        if(requestCode == SIGN_IN_REQUEST_CODE) {
+            val response = IdpResponse.fromResultIntent(data)
+            if(resultCode == Activity.RESULT_OK) {
+                val userName = FirebaseAuth.getInstance().currentUser?.displayName
+                Log.i(TAG, "Signed in $userName")
+            } else {
+                Log.i(TAG, "Sign in failed: ${response?.error}")
+            }
+        }
     }
 
     /**
@@ -80,18 +82,29 @@ class MainFragment : Fragment() {
     private fun observeAuthenticationState() {
         val factToDisplay = viewModel.getFactToDisplay(requireContext())
 
-        // TODO Use the authenticationState variable from LoginViewModel to update the UI
-        //  accordingly.
-        //
-        //  TODO If there is a logged-in user, authButton should display Logout. If the
-        //   user is logged in, you can customize the welcome message by utilizing
-        //   getFactWithPersonalition(). I
+        viewModel.authenticationState.observe(this, Observer { authenticationState ->
+            when(authenticationState) {
+                /** When authenticated, show logout button and personalized message **/
+                LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                    binding.authButton.text = getString(R.string.logout_button_text)
+                    binding.authButton.setOnClickListener {
+                        AuthUI.getInstance().signOut(requireContext()) // sign out
+                    }
 
-        // TODO If there is no logged in user, authButton should display Login and launch the sign
-        //  in screen when clicked. There should also be no personalization of the message
-        //  displayed.
+                    binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
+
+                }
+                /** When not authenticated, show login button and regular message **/
+                else -> {
+                    binding.authButton.text = getString(R.string.login_button_text)
+                    binding.authButton.setOnClickListener {
+                        launchSignInFlow() // launch sign in flow
+                    }
+                    binding.welcomeText.text = factToDisplay
+                }
+            }
+        })
     }
-
 
     private fun getFactWithPersonalization(fact: String): String {
         return String.format(
@@ -104,7 +117,15 @@ class MainFragment : Fragment() {
     }
 
     private fun launchSignInFlow() {
-        // TODO Complete this function by allowing users to register and sign in with
-        //  either their email address or Google account.
+        val providers = arrayListOf(AuthUI.IdpConfig.EmailBuilder().build()
+        // Add more auth providers here
+        )
+        startActivityForResult(
+            AuthUI.getInstance()
+                .createSignInIntentBuilder()
+                .setAvailableProviders(providers)
+                .build(),
+            SIGN_IN_REQUEST_CODE
+        )
     }
 }

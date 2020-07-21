@@ -1683,3 +1683,86 @@ Explanation given in comment format. Follow repos in order.
     1. **Firebase auth**
         > https://codelabs.developers.google.com/codelabs/advanced-android-kotlin-training-login
 
+        1. Add click handler to login button to launch firebase auth UI. In [`MainFragment.kt`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/MainFragment.kt)-
+
+            ```kotlin
+            private fun launchSignInFlow() {
+                val providers = arrayListOf(AuthUI.IdpConfig.EmailBuilder().build()
+                // Add more auth providers here
+                )
+                startActivityForResult(
+                    AuthUI.getInstance()
+                        .createSignInIntentBuilder()
+                        .setAvailableProviders(providers)
+                        .build(),
+                    SIGN_IN_REQUEST_CODE
+                )
+            }
+            ```
+
+        2. Listen to result in `override fun onActivityResult()` in [`MainFragment.kt`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/MainFragment.kt)- 
+
+            ```kotlin
+            override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+                super.onActivityResult(requestCode, resultCode, data)
+                if(requestCode == SIGN_IN_REQUEST_CODE) {
+                    val response = IdpResponse.fromResultIntent(data)
+                    if(resultCode == Activity.RESULT_OK) {
+                        val userName = FirebaseAuth.getInstance().currentUser?.displayName
+                        Log.i(TAG, "Signed in $userName")
+                    } else {
+                        Log.i(TAG, "Sign in failed: ${response?.error}")
+                    }
+                }
+            }
+            ```
+
+    2. **Customize UI based on auth state**: If user is signed out, login button and regular message should be shown. Else logout button and personalized message should be shown.
+        1. Set up `LiveData` listener on firebase user data in [`FirebaseUserLiveData.kt`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/FirebaseUserLiveData.kt).
+
+            ```kotlin
+            class FirebaseUserLiveData : LiveData<FirebaseUser?>() {
+                private val firebaseAuth = FirebaseAuth.getInstance()
+            
+                private val authStateListener = FirebaseAuth.AuthStateListener { firebaseAuth ->
+                    value = firebaseAuth.currentUser
+                }
+            ```
+
+        2. Transform this data in [`LoginViewModel`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/LoginViewModel.kt)
+
+            ```kotlin
+            val authenticationState = FirebaseUserLiveData().map { user ->
+                if(user != null) {
+                    AuthenticationState.AUTHENTICATED
+                } else {
+                    AuthenticationState.UNAUTHENTICATED
+                }
+            }
+            ```
+
+        3. Listen to this transformed data in [`LoginViewModel.kt`](android-kotlin-login/app/src/main/java/com/example/android/firebaseui_login_sample/LoginViewModel.kt). Remove default code which shows login button.
+
+            ```kotlin
+            viewModel.authenticationState.observe(this, Observer { authenticationState ->
+                when(authenticationState) {
+                    /** When authenticated, show logout button and personalized message **/
+                    LoginViewModel.AuthenticationState.AUTHENTICATED -> {
+                        binding.authButton.text = getString(R.string.logout_button_text)
+                        binding.authButton.setOnClickListener {
+                            AuthUI.getInstance().signOut(requireContext()) // sign out
+                        }
+    
+                        binding.welcomeText.text = getFactWithPersonalization(factToDisplay)
+    
+                    }
+                    /** When not authenticated, show login button and regular message **/
+                    else -> {
+                        binding.authButton.text = getString(R.string.login_button_text)
+                        binding.authButton.setOnClickListener {
+                            launchSignInFlow() // launch sign in flow
+                        }
+                        binding.welcomeText.text = factToDisplay
+                    }
+                }
+            ```

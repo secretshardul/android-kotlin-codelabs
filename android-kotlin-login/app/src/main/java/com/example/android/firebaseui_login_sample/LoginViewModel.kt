@@ -24,6 +24,14 @@ import kotlin.random.Random
 
 class LoginViewModel : ViewModel() {
 
+    val authenticationState = FirebaseUserLiveData().map { user ->
+        if(user != null) {
+            AuthenticationState.AUTHENTICATED
+        } else {
+            AuthenticationState.UNAUTHENTICATED
+        }
+    }
+
     companion object {
         val androidFacts = arrayOf(
             "The first commercial Android device was launched in September 2008",
